@@ -6,8 +6,8 @@ payloads are included; synthetic recipes are regenerated deterministically.
 The full-test runner lives in `textcraft_fulltest/`; the old 100-task
 subsample module is not included.
 Success is determined by the environment's root-task completion check, not by
-an external LLM judge. This is the original single-trajectory evaluation, not
-Best-of-N selection or a single-agent ablation.
+an external LLM judge. The default is the original recursive, single-trajectory
+evaluation; the separate 155-style single-Agent protocol is also supported.
 
 ## Setup
 
@@ -51,6 +51,22 @@ python Scripts/Eval/textcraft/aggregate_results.py \
 
 The served model ID is recorded, but weights are not fingerprinted. Use a
 different run directory for each checkpoint and every independent repeat.
+
+## Single-Agent protocol (source project 155)
+
+The same 632-task manifest, TextCraft environment, model client, shard runner
+and aggregation code are reused. Only the agent/prompt and rollout limits
+change: use the nonrecursive `TextCraftAgent`/`create_synth_env`, 200 root steps
+and depth zero; temperature 0 and the 10,240/9,728/512 context/prompt/completion
+limits stay unchanged. No SubAgent action is exposed. With a local checkpoint:
+
+```bash
+bash Scripts/Eval/textcraft/run_single_agent.sh /path/to/hf-checkpoint
+```
+
+For an existing API or manual multi-machine plan, add `--single-agent` to
+`Scripts/Eval/textcraft/create_plan.py`, then use the normal shard and aggregate
+commands below. A recursive run directory cannot be reused for this protocol.
 
 ## Multiple machines
 

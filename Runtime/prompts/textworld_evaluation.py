@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Callable
 from Runtime.environments.textworld.manifest import TaskSpec
 from Runtime.agents.textworld_protocol import (
     ACTION_PATTERN, DELEGATE_PATTERN, FINISH_PATTERN, INVENTORY_ACTIONS,
@@ -19,11 +19,18 @@ class TextWorldPromptBuilder:
         max_depth: int = 3,
         max_subagent_steps: int = 20,
         allow_subagents: bool = True,
+        preserve_history: bool = False,
+        token_counter: Callable[[list[dict[str, str]]], int] | None = None,
     ):
         self.max_prompt_tokens = max_prompt_tokens
         self.max_depth = max_depth
         self.max_subagent_steps = max_subagent_steps
         self.allow_subagents = allow_subagents
+        self.preserve_history = preserve_history
+        self.token_counter = token_counter
+
+    def _count_tokens(self, messages: list[dict[str, str]]) -> int:
+        return self.token_counter(messages) if self.token_counter is not None else _estimate_tokens(messages)
 
     def build_messages(
         self,
@@ -64,37 +71,55 @@ class TextWorldPromptBuilder:
                 }
             )
 
+        if self.preserve_history:
+            count = self._count_tokens(messages)
+            return messages, count, count > self.max_prompt_tokens
+
         truncated = False
-        while len(messages) > 2 and _estimate_tokens(messages) > self.max_prompt_tokens:
+        while len(messages) > 2 and self._count_tokens(messages) > self.max_prompt_tokens:
             # Preserve the fixed system/task prefix and the latest environment state.
             del messages[2:4]
             truncated = True
-        return messages, _estimate_tokens(messages), truncated
+        return messages, self._count_tokens(messages), truncated
 
     def _system_prompt(self, task: TaskSpec, agent_id: str, depth: int) -> str:
         can_delegate = self.allow_subagents and depth < self.max_depth
         delegation = self._delegation_strategy(depth) if can_delegate else ""
-        return (
-            "You are an agent in a TextWorldExpress interactive task.\n"
-            f"You are Agent {agent_id}.\n"
-            f"Your current delegation depth is {depth} (root is depth 0).\n"
-            "Your goal is to complete the task by issuing textual environment commands.\n"
-            "You have access to the current observation and Valid Actions list.\n"
+        collaboration = (
             "Before selecting the next environment action, briefly consider whether the current goal contains multiple subgoals that can be solved independently or in parallel.\n"
             "If decomposition appears useful, identify the concrete subgoals and decide whether delegating one or more of them to identical Agents would improve progress under the remaining step budget. A delegated goal should be specific, self-contained, and useful to the parent task.\n"
             "BUDGET-AWARE COLLABORATION:\n"
             "The current Agent's remaining step budget counts only actions taken by the current Agent. A delegated SubAgent executes with its own independent rollout budget. SubAgent actions do not consume the current Agent's remaining step budget.\n"
             "Delegation can reduce the parent's sequential workload when independent subgoals are executed in parallel.\n"
-            "The shared inventory is not shown automatically. Use the inventory action in the "
+            if self.allow_subagents else ""
+        )
+        agent_context = f"Your current delegation depth is {depth} (root is depth 0).\n" if self.allow_subagents else ""
+        recursive_context = (
+            "If you are a SubAgent, the User Prompt contains the goal assigned by your Parent. "
+            "All Agents use the same goal-based recursive interface; a SubAgent goal may be more "
+            "detailed than its Parent's goal so that the required work is unambiguous.\n"
+            if self.allow_subagents else ""
+        )
+        response_instruction = (
+            "Return exactly one block from the Action Space in the User Prompt and nothing else.\n"
+            if self.allow_subagents else
+            "Return exactly one block from the Action Space in the User Prompt and nothing else. The next response must contain your next action.\n"
+        )
+        return (
+            "You are an agent in a TextWorldExpress interactive task.\n"
+            f"You are Agent {agent_id}.\n"
+            + agent_context
+            + "Your goal is to complete the task by issuing textual environment commands.\n"
+            + "You have access to the current observation and Valid Actions list.\n"
+            + collaboration
+            + "The shared inventory is not shown automatically. Use the inventory action in the "
             "Action Space whenever you need to inspect its current contents.\n"
             "Use only an action that is present in the current Valid Actions list when possible.\n"
             "Do not invent state, task completion, or hidden objects.\n"
             "Each Agent has its own action/observation history and logical location, while all "
             "Agents interact with the same underlying world and its resources.\n"
-            "If you are a SubAgent, the User Prompt contains the goal assigned by your Parent. "
-            "All Agents use the same goal-based recursive interface; a SubAgent goal may be more "
-            "detailed than its Parent's goal so that the required work is unambiguous.\n"
-            "\n<TIPS>\n"
+            + recursive_context
+            + "\n<TIPS>\n"
             "INTERACTION STRATEGY:\n"
             "- Inspect the current observation and Valid Actions before acting.\n"
             "- Track prerequisites: move, open, take, and preparation actions may need to happen "
@@ -103,7 +128,7 @@ class TextWorldPromptBuilder:
             "\n"
             + delegation
             + "</TIPS>\n\n"
-            + "Return exactly one block from the Action Space in the User Prompt and nothing else.\n"
+            + response_instruction
             + "The task is evaluated by the environment, not by a language-model judge."
         )
 
@@ -191,7 +216,7 @@ class TextWorldPromptBuilder:
                 if self.allow_subagents
                 else ""
             )
-            + "Now provide the first action or delegation."
+            + ("Now provide the first action or delegation." if self.allow_subagents else "Now provide the first action.")
         )
 
     def _observation_user(
@@ -220,7 +245,7 @@ class TextWorldPromptBuilder:
                 if self.allow_subagents
                 else ""
             )
-            + "Provide your next action or delegation."
+            + ("Provide your next action or delegation." if self.allow_subagents else "Provide your next action.")
         )
 
     @staticmethod

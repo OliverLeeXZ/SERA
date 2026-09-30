@@ -8,8 +8,8 @@ by the Runtime extraction.
 ```
 Scripts/
   Eval/
-    textcraft/{run.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
-    textworld/{run.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
+    textcraft/{run.sh,run_single_agent.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
+    textworld/{run.sh,run_single_agent.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
   Main/
     textcraft/*.sh             # six existing training recipes
     textworld/*.sh             # six existing training recipes
@@ -26,6 +26,10 @@ ID). Install `Evaluation/requirements-serving.txt` first:
 ```bash
 bash Scripts/Eval/textcraft/run.sh /path/to/hf-checkpoint
 bash Scripts/Eval/textworld/run.sh /path/to/hf-checkpoint
+
+# Single-Agent baselines: original 155/156 protocols on the same test sets.
+bash Scripts/Eval/textcraft/run_single_agent.sh /path/to/hf-checkpoint
+bash Scripts/Eval/textworld/run_single_agent.sh /path/to/hf-checkpoint
 ```
 
 Alternatively, fill in/export `MODEL_PATH` and run the bash file without
@@ -47,7 +51,8 @@ python Scripts/Eval/textcraft/aggregate_results.py \
 ```
 
 `evaluate_shard.py` runs each shard against your existing model endpoint.
-See [TextCraft evaluation](../Evaluation/TextCraft/README.md) and
+Use `create_plan.py --single-agent` when manually planning a single-Agent
+multi-machine run. See [TextCraft evaluation](../Evaluation/TextCraft/README.md) and
 [TextWorld evaluation](../Evaluation/TextWorld/README.md) for worker commands,
 multi-machine sharding and resume support. All six entry points support `--help`.
 

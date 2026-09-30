@@ -36,6 +36,7 @@ def parser():
     result.add_argument("--task-retries", type=int, default=1)
     result.add_argument("--temperature", type=float, default=0.0)
     result.add_argument("--no-enable-reasoning", action="store_true")
+    result.add_argument("--single-agent", action="store_true", help="Use the 155/156 single-Agent evaluation protocol")
     result.add_argument("--best-of-n", action="store_true", help="Use TestTimeScale's recursive TextWorld selector")
     result.add_argument("--branching-factor", type=int, default=2)
     result.add_argument("--selection-mode", choices=["rubric", "oracle", "first", "random"], default="rubric")
@@ -61,12 +62,16 @@ def execute(args):
         raise ValueError("Invalid concurrency, retries or startup timeout")
     if args.best_of_n and args.backend != "TextWorld":
         raise ValueError("Best-of-N is only supported for TextWorld")
+    if args.best_of_n and args.single_agent:
+        raise ValueError("Best-of-N and single-Agent evaluation are separate protocols")
     if model_path and Path(model_path).exists():
         model_path = str(Path(model_path).resolve())
-    values = default_protocol(args.backend)
+    values = default_protocol(args.backend, single_agent=args.single_agent)
     values["temperature"] = args.temperature
     if args.backend == "TextWorld":
         values["enable_reasoning"] = not args.no_enable_reasoning
+        if args.single_agent:
+            values["tokenizer_path"] = model_path if model_path and Path(model_path).is_dir() else None
     if args.best_of_n:
         from TestTimeScale.entrypoints import protocol
         from TestTimeScale.textworld_bestofn.rubric_selector import RubricSelectionConfig
@@ -79,7 +84,7 @@ def execute(args):
         values = protocol(values, selector, judge)
         if judge and not args.dry_run and not os.getenv(judge.api_key_env):
             raise ValueError(f"External judge requires {judge.api_key_env}")
-    tag = "bestofn" if args.best_of_n else "n1"
+    tag = "bestofn" if args.best_of_n else ("single" if args.single_agent else "n1")
     output_base = ROOT.parent / "TestTimeScale" if args.best_of_n else ROOT
     output = (args.output_root or output_base / "outputs" / args.backend.lower() / f"{tag}-{datetime.now():%Y%m%d-%H%M%S-%f}").resolve()
     model = f"openai/{args.model_name}" if args.backend == "TextCraft" else args.model_name

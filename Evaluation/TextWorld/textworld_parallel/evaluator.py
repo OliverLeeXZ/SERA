@@ -7,11 +7,11 @@ import tempfile
 import time
 from dataclasses import asdict, dataclass, replace
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from Runtime.environments.textworld.composite_cooking import CompositeAgentView, CompositeCookingWorldCoordinator
 
-from Runtime.clients.openai_chat import VLLMChatClient
+from Runtime.clients.openai_chat import ContextLimitExceededError, VLLMChatClient
 from Runtime.environments.textworld.manifest import TaskManifest, TaskSpec
 from Runtime.prompts.textworld_evaluation import (
     Decision,
@@ -22,6 +22,25 @@ from Runtime.prompts.textworld_evaluation import (
     is_inventory_action,
 )
 from .summary import summarize_records, write_json_atomic
+
+
+def _load_chat_token_counter(tokenizer_path: str | None, *, enable_reasoning: bool):
+    """Use the served checkpoint's chat template for the 156-style context cap."""
+    if tokenizer_path is None:
+        return None
+    from transformers import AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained(
+        tokenizer_path, local_files_only=True, trust_remote_code=True,
+    )
+
+    def count(messages: list[dict[str, str]]) -> int:
+        return len(tokenizer.apply_chat_template(
+            messages, tokenize=True, add_generation_prompt=True,
+            chat_template_kwargs={"enable_thinking": enable_reasoning},
+        ))
+
+    return count
 
 
 @dataclass(frozen=True)
@@ -39,6 +58,8 @@ class EvaluationSettings:
     enable_subagents: bool = True
     enable_reasoning: bool = True
     shared_environment_max_steps: int = 100
+    preserve_history: bool = False
+    tokenizer_path: str | None = None
 
     def __post_init__(self) -> None:
         if self.max_prompt_tokens + self.max_completion_tokens > self.context_length:
@@ -51,12 +72,13 @@ class EvaluationSettings:
                 self.max_completion_tokens,
                 self.max_steps,
                 self.subagent_max_steps,
-                self.max_depth,
                 self.concurrency,
                 self.shared_environment_max_steps,
             )
         ):
             raise ValueError("evaluation limits must be positive")
+        if self.max_depth < 0:
+            raise ValueError("max_depth must be non-negative")
 
 
 def _write_task(path: Path, payload: dict[str, Any]) -> None:
@@ -146,6 +168,8 @@ async def _run_agent(
     children: list[dict[str, Any]] = []
     prompt_tokens_peak = 0
     truncated_turns = 0
+    context_limit_exceeded = False
+    termination_reason = None
     returned_to_parent = False
     finish_message = ""
     started = time.perf_counter()
@@ -158,7 +182,7 @@ async def _run_agent(
         observation, infos = await view.observe_async()
         if _environment_success(infos) or _environment_done(infos):
             break
-        messages, estimated_prompt_tokens, truncated = builder.build_messages(
+        messages, estimated_prompt_tokens, truncated_or_exceeded = builder.build_messages(
             agent_task,
             observation,
             initial_infos,
@@ -168,13 +192,43 @@ async def _run_agent(
             agent_max_steps=agent_max_steps,
         )
         prompt_tokens_peak = max(prompt_tokens_peak, estimated_prompt_tokens)
-        truncated_turns += int(truncated)
-        completion = await asyncio.to_thread(
-            client.complete,
-            messages,
-            temperature=settings.temperature,
-            max_completion_tokens=settings.max_completion_tokens,
-        )
+        if settings.preserve_history and truncated_or_exceeded:
+            context_limit_exceeded = True
+            termination_reason = (f"prompt has {estimated_prompt_tokens} tokens, exceeding the "
+                                  f"{settings.max_prompt_tokens}-token prompt limit")
+            step_records.append(dict(step=step_index, action_type="context_limit_exceeded",
+                                     decision="context_limit_exceeded", parse_ok=False,
+                                     parse_error=termination_reason, estimated_prompt_tokens=estimated_prompt_tokens,
+                                     request_max_completion_tokens=0))
+            break
+        truncated_turns += int(truncated_or_exceeded) if not settings.preserve_history else 0
+        available_completion_tokens = settings.context_length - estimated_prompt_tokens
+        if settings.preserve_history and available_completion_tokens <= 0:
+            context_limit_exceeded = True
+            termination_reason = (f"prompt has {estimated_prompt_tokens} tokens, leaving no room in the "
+                                  f"{settings.context_length}-token context window")
+            step_records.append(dict(step=step_index, action_type="context_limit_exceeded",
+                                     decision="context_limit_exceeded", parse_ok=False,
+                                     parse_error=termination_reason, estimated_prompt_tokens=estimated_prompt_tokens,
+                                     request_max_completion_tokens=0))
+            break
+        request_max_completion_tokens = (min(settings.max_completion_tokens, available_completion_tokens)
+                                         if settings.preserve_history else settings.max_completion_tokens)
+        try:
+            completion = await asyncio.to_thread(
+                client.complete, messages, temperature=settings.temperature,
+                max_completion_tokens=request_max_completion_tokens,
+            )
+        except ContextLimitExceededError as error:
+            if not settings.preserve_history:
+                raise
+            context_limit_exceeded = True
+            termination_reason = str(error)
+            step_records.append(dict(step=step_index, action_type="context_limit_exceeded",
+                                     decision="context_limit_exceeded", parse_ok=False,
+                                     parse_error=termination_reason, estimated_prompt_tokens=estimated_prompt_tokens,
+                                     request_max_completion_tokens=request_max_completion_tokens))
+            break
         decision: Decision = extract_decision(completion.content)
         common = {
             "step": step_index,
@@ -185,6 +239,7 @@ async def _run_agent(
             "parse_error": decision.error,
             "usage": completion.usage,
             "estimated_prompt_tokens": estimated_prompt_tokens,
+            "request_max_completion_tokens": request_max_completion_tokens,
             "response_model": completion.model,
             "response_id": completion.response_id,
         }
@@ -325,16 +380,19 @@ async def _run_agent(
         "goal": goal,
         "returned_to_parent": returned_to_parent,
         "finish_message": finish_message,
-        "environment_success": _environment_success(final_infos),
+        "environment_success": _environment_success(final_infos) and not context_limit_exceeded,
+        "actual_environment_success": _environment_success(final_infos),
         "environment_done": _environment_done(final_infos),
         "steps": len(step_records),
         "max_steps": agent_max_steps,
         "remaining_steps": max(agent_max_steps - len(step_records), 0),
-        "final_score": float(final_infos.get("score", 0.0)),
-        "final_tasksuccess": bool(final_infos.get("tasksuccess", False)),
-        "final_taskfailure": bool(final_infos.get("taskfailure", False)),
+        "final_score": 0.0 if context_limit_exceeded else float(final_infos.get("score", 0.0)),
+        "final_tasksuccess": _environment_success(final_infos) and not context_limit_exceeded,
+        "final_taskfailure": context_limit_exceeded or bool(final_infos.get("taskfailure", False)),
         "peak_estimated_prompt_tokens": prompt_tokens_peak,
         "truncated_context_steps": truncated_turns,
+        "context_limit_exceeded": context_limit_exceeded,
+        "termination_reason": termination_reason,
         "wall_time_seconds": time.perf_counter() - started,
         "initial_observation": initial_observation,
         "initial_infos": initial_infos,
@@ -350,8 +408,9 @@ def _run_task_sync(
     manifest_sha256: str,
     client: VLLMChatClient,
     settings: EvaluationSettings,
+    token_counter: Callable[[list[dict[str, str]]], int] | None,
 ) -> dict[str, Any]:
-    return asyncio.run(_run_task_async(task, manifest_sha256, client, settings))
+    return asyncio.run(_run_task_async(task, manifest_sha256, client, settings, token_counter))
 
 
 async def _run_task_async(
@@ -359,6 +418,7 @@ async def _run_task_async(
     manifest_sha256: str,
     client: VLLMChatClient,
     settings: EvaluationSettings,
+    token_counter: Callable[[list[dict[str, str]]], int] | None = None,
 ) -> dict[str, Any]:
     if task.game == "cookingworld_multidish":
         parallelism = dict(
@@ -381,6 +441,8 @@ async def _run_task_async(
         max_depth=settings.max_depth,
         max_subagent_steps=settings.subagent_max_steps,
         allow_subagents=settings.enable_subagents,
+        preserve_history=settings.preserve_history,
+        token_counter=token_counter,
     )
     started = time.perf_counter()
     try:
@@ -418,6 +480,8 @@ async def _run_task_async(
             **subagent_stats,
             "peak_estimated_prompt_tokens": root["peak_estimated_prompt_tokens"],
             "truncated_context_steps": root["truncated_context_steps"],
+            "context_limit_exceeded": root["context_limit_exceeded"],
+            "termination_reason": root["termination_reason"],
             "wall_time_seconds": time.perf_counter() - started,
             "initial_observation": root["initial_observation"],
             "initial_infos": root["initial_infos"],
@@ -460,6 +524,9 @@ async def evaluate_manifest(
     output.mkdir(parents=True, exist_ok=True)
     rollouts = output / "rollouts"
     rollouts.mkdir(parents=True, exist_ok=True)
+    token_counter = _load_chat_token_counter(
+        settings.tokenizer_path, enable_reasoning=settings.enable_reasoning,
+    ) if settings.preserve_history else None
     write_json_atomic(
         output / "evaluation_config.json",
         {
@@ -469,6 +536,7 @@ async def evaluate_manifest(
             "task_count": len(manifest.tasks),
             "model": model,
             "base_url": base_url,
+            "prompt_token_counter": "model_chat_template" if token_counter is not None else "conservative_estimate",
             "settings": asdict(settings),
         },
     )
@@ -490,7 +558,7 @@ async def evaluate_manifest(
             for attempt in range(settings.task_retries + 1):
                 try:
                     result = await asyncio.to_thread(
-                        _run_task_sync, task, manifest.source_sha256, client, settings
+                        _run_task_sync, task, manifest.source_sha256, client, settings, token_counter
                     )
                     _write_task(destination, result)
                     return result

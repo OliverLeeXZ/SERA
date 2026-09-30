@@ -19,8 +19,8 @@ from platoon.inference import (
     InferenceBenchmarkRunner,
     InferenceWorkflowConfig,
 )
-from platoon.textcraft.agent import TextCraftDepthAwareAgent
-from platoon.textcraft.env import create_synth_depth_aware_env
+from platoon.textcraft.agent import TextCraftAgent, TextCraftDepthAwareAgent
+from platoon.textcraft.env import create_synth_env, create_synth_depth_aware_env
 from platoon.textcraft.synth_tasks import get_synth_task
 from platoon.utils.llm_client import LiteLLMClient
 from platoon.visualization.event_sinks import JsonlFileSink
@@ -62,12 +62,13 @@ class EvaluationSettings:
             self.max_completion_tokens,
             self.max_steps,
             self.subagent_max_steps,
-            self.max_depth,
             self.num_rollouts_per_task,
             self.concurrency,
         )
         if any(value <= 0 for value in positive):
             raise ValueError("evaluation limits must be positive")
+        if self.max_depth < 0:
+            raise ValueError("max_depth must be non-negative")
 
 
 def build_rollout_config(
@@ -121,28 +122,29 @@ async def run_local_depth_aware_rollout(
     collection_token = None
     budget_token = None
     try:
-        per_agent_max_steps = config.subagent_max_steps or config.max_steps or 20
+        single_agent = config.max_subagent_depth == 0
+        per_agent_max_steps = (config.max_steps if single_agent else config.subagent_max_steps) or 20
         llm_client = LiteLLMClient(
             model=str(config.model_name),
             base_url=config.model_endpoint,
             api_key=config.model_api_key,
         )
         task.max_steps = per_agent_max_steps
-        env = create_synth_depth_aware_env(
-            task,
-            subagent_max_steps=per_agent_max_steps,
-            skip_subagent_reward_computation=config.skip_subagent_reward_computation,
-        )
-        agent = TextCraftDepthAwareAgent(
+        env = (create_synth_env(task, skip_subagent_reward_computation=config.skip_subagent_reward_computation)
+               if single_agent else create_synth_depth_aware_env(
+                   task, subagent_max_steps=per_agent_max_steps,
+                   skip_subagent_reward_computation=config.skip_subagent_reward_computation))
+        agent = (TextCraftAgent if single_agent else TextCraftDepthAwareAgent)(
             llm_client=llm_client,
             inference_params=config.inference_params,
         )
 
         collection = TrajectoryCollection()
         collection_token = current_trajectory_collection.set(collection)
-        budget_token = budget_tracker.set(
-            DepthAwareStepBudgetTracker(max_depth=config.max_subagent_depth)
-        )
+        if not single_agent:
+            budget_token = budget_tracker.set(
+                DepthAwareStepBudgetTracker(max_depth=config.max_subagent_depth)
+            )
         events_path = (
             Path(config.output_dir)
             / "events"

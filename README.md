@@ -2,9 +2,10 @@
 
 Official implementation of "Self-Evaluating Recursive Agents".
 
-Install the training dependencies from the repository root with
-`pip install -r requirements.txt`. Local evaluation model serving has an
-optional dependency set in `Evaluation/requirements-serving.txt`.
+For training and local-GPU evaluation, use Python 3.12 and install the complete
+environment from the repository root with `pip install -r requirements.txt`.
+The smaller `Evaluation/requirements-serving.txt` is available when only local
+evaluation serving is needed.
 
 ## Scripts
 
@@ -28,7 +29,8 @@ Best-of-N rollout policies remain in their respective directories.
 ## Evaluation
 
 See [Evaluation/README.md](Evaluation/README.md) for portable TextCraft-Synth and
-TextWorld-Sync evaluation, including multi-machine sharding and resumable runs.
+TextWorld-Sync evaluation, including recursive and 155/156 single-Agent
+protocols, multi-machine sharding and resumable runs.
 
 ## Training
 

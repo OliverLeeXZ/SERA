@@ -1,6 +1,6 @@
 # Evaluation
 
-Portable evaluation for the recursive SERA agent on two fixed benchmarks:
+Portable evaluation for recursive and single-Agent policies on two fixed benchmarks:
 
 | Benchmark | Tasks | Difficulty counts (Easy / Medium / Hard / Extreme) | Runtime |
 | --- | ---: | --- | --- |
@@ -8,7 +8,8 @@ Portable evaluation for the recursive SERA agent on two fixed benchmarks:
 | [TextWorld-Sync V9](TextWorld/README.md) | 1400 | 350 / 350 / 350 / 350 | Pure-Python shared cooking world |
 
 Both evaluators use an OpenAI-compatible chat-completions API. The low-level
-workers connect to an existing server. Optional `Scripts/Eval/*/run.sh` launchers
+workers connect to an existing server. Optional `Scripts/Eval/*/run.sh` and
+`run_single_agent.sh` launchers
 start and clean up local vLLM replicas automatically; no cluster scheduler is
 required, and the scripts never request or submit GPU jobs.
 This directory includes evaluation-specific orchestration; common environments,
@@ -54,7 +55,7 @@ for the seven families, difficulty bands and generation details.
 Launch scripts live in `../Scripts/Eval/textcraft/` and
 `../Scripts/Eval/textworld/`; no script directories remain in Evaluation.
 See [Scripts/README.md](../Scripts/README.md) for their locations.
-Each benchmark has three entry points: `create_plan.py`, `evaluate_shard.py` and
+Each benchmark has three low-level entry points: `create_plan.py`, `evaluate_shard.py` and
 `aggregate_results.py`. A single shard runs on one machine; multiple shards can
 run concurrently on different machines. Use one shared writable run directory
 and one worker per shard. Each worker can point to its own model-server URL,

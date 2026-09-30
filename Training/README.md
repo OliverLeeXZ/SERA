@@ -95,7 +95,9 @@ branch-0 commit and stage routing reuse the existing shared implementations.
 Use Python 3.12 and a CUDA-capable environment compatible with the pinned AReaL
 revision. From the repository root, run `uv pip install -r requirements.txt`.
 The AReaL revision is the source runs' declared dependency, not an arbitrary
-latest release. Its CUDA/SGLang installation may need your site's toolchain.
+latest release. This root file also covers local evaluation serving. Its
+CUDA/SGLang installation may need your site's toolchain and compatible
+PyTorch wheels.
 All nodes must use the same environment, repository path, and shared output root.
 
 The default allocation is two nodes with eight GPUs each: eight SGLang inference

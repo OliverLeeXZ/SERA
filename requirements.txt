@@ -1,12 +1,29 @@
-# Install from the repository root: pip install -r requirements.txt
-# Shared TextCraft runtime used by training and evaluation.
--r Runtime/requirements-textcraft.txt
+# Python 3.12; install from the repository root: pip install -r requirements.txt
+# Versions are aligned with the R3AO 155/156 evaluation environment (rao-areal)
+# and the pinned AReaL training source. CUDA/PyTorch wheels must match the host.
 
-# Training configuration, datasets, and tensor utilities.
-omegaconf>=2.3,<2.4
+# TextCraft CodeAct runtime and policy/API clients.
+ipython==9.15.0
+traitlets==5.15.1
+jinja2==3.1.6
+# 1.80.0 accepts OpenAI SDK 1.99.6; the R3AO env's 1.82.3 metadata requires SDK 2.x.
+litellm==1.80.0
+openai==1.99.6
+pydantic==2.12.5
+
+# Training configuration and tensor/data utilities.
+omegaconf==2.4.0.dev2
 datasets==4.3.0
-tensordict
-torchdata
+tensordict==0.13.0
+torchdata==0.11.0
+
+# GPU training and local evaluation serving, including the exact tokenizer
+# used to count the full TextWorld single-Agent prompt history.
+torch==2.8.0
+transformers==4.56.1
+vllm==0.10.2
+sglang[all]==0.5.2
+ray[default]==2.50.0
 
 # Pinned AReaL source revision used by the training recipes.
-areal[cuda] @ git+https://github.com/areal-project/AReaL.git@35b57e2d2743f7158894239acda8b71f7226b955
+areal @ git+https://github.com/areal-project/AReaL.git@35b57e2d2743f7158894239acda8b71f7226b955

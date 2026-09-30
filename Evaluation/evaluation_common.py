@@ -66,7 +66,7 @@ def use_backend(backend: str) -> None:
     sys.path.insert(0, str(ROOT / backend))
 
 
-def default_protocol(backend: str) -> dict:
+def default_protocol(backend: str, *, single_agent: bool = False) -> dict:
     protocol = dict(temperature=0.0, context_length=10240,
                     max_prompt_tokens=9728, max_completion_tokens=512,
                     max_steps=20, subagent_max_steps=20, max_depth=3)
@@ -74,6 +74,10 @@ def default_protocol(backend: str) -> dict:
         protocol.update(context_length=13312, max_prompt_tokens=10240,
                         max_completion_tokens=3072, enable_subagents=True,
                         enable_reasoning=True, shared_environment_max_steps=100)
+    if single_agent:
+        protocol.update(max_steps=200, max_depth=0)
+        if backend == "TextWorld":
+            protocol.update(enable_subagents=False, preserve_history=True)
     return protocol
 
 
@@ -88,7 +92,7 @@ def create_plan(backend: str, model: str, output_root: Path, num_shards: int,
     if protocol["max_prompt_tokens"] + protocol["max_completion_tokens"] > protocol["context_length"]:
         raise ValueError("prompt and completion caps exceed context length")
     if any(protocol[key] <= 0 for key in ("context_length", "max_prompt_tokens", "max_completion_tokens",
-                                          "max_steps", "subagent_max_steps", "max_depth")):
+                                          "max_steps", "subagent_max_steps")) or protocol["max_depth"] < 0:
         raise ValueError("Evaluation budgets must be positive")
     if protocol["temperature"] < 0:
         raise ValueError("temperature must be non-negative")
@@ -306,7 +310,11 @@ def cli(backend: str, command: str) -> None:
         parser.add_argument("--model", required=True, help="Served model ID (TextCraft: openai/<ID>; TextWorld: <ID>)")
         parser.add_argument("--output-root", type=Path, required=True)
         parser.add_argument("--num-shards", type=int, default=1)
-        defaults = default_protocol(backend)
+        parser.add_argument("--single-agent", action="store_true", help="Use the 155/156 single-Agent protocol")
+        preliminary, _ = parser.parse_known_args()
+        defaults = default_protocol(backend, single_agent=preliminary.single_agent)
+        if backend == "TextWorld" and preliminary.single_agent:
+            parser.add_argument("--tokenizer-path", help="Local served-model tokenizer for exact prompt counting")
         for key, value in defaults.items():
             flag = "--" + key.replace("_", "-")
             if isinstance(value, bool):
@@ -315,6 +323,8 @@ def cli(backend: str, command: str) -> None:
                 parser.add_argument(flag, type=type(value), default=value)
         args = parser.parse_args()
         protocol = {key: getattr(args, key) for key in defaults}
+        if backend == "TextWorld" and args.single_agent:
+            protocol["tokenizer_path"] = args.tokenizer_path
         result = create_plan(backend, args.model, args.output_root, args.num_shards, protocol)
         print(json.dumps(result, indent=2))
     elif command == "evaluate_shard":

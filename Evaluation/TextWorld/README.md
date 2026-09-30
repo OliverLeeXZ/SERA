@@ -127,6 +127,26 @@ python Scripts/Eval/textworld/aggregate_results.py \
 Use a unique run directory for each checkpoint and independent repeat. Served
 model IDs are recorded, but model weights are not automatically fingerprinted.
 
+## Single-Agent protocol (source project 156)
+
+The same 1,400 tasks, composite world, HTTP client, sharding and aggregation
+are reused. The single-Agent prompt omits delegation, depth is zero and the
+root receives 200 model steps. Temperature 0, reasoning enabled, the global
+environment-action budget and the 13,312/10,240/3,072
+context/prompt/completion limits are unchanged. Unlike recursive evaluation,
+the complete prompt history is retained; crossing the input limit terminates
+the trajectory as a failure rather than dropping earlier turns.
+
+```bash
+bash Scripts/Eval/textworld/run_single_agent.sh /path/to/hf-checkpoint
+```
+
+For a local checkpoint, the launcher counts tokens with that checkpoint's chat
+template. For an existing API, supply a local tokenizer with
+`create_plan.py --single-agent --tokenizer-path /path/to/hf-checkpoint`; without
+one, a conservative token estimate is used. The regular shard commands below
+work with a `--single-agent` plan. Do not reuse a recursive run directory.
+
 ## Multiple machines
 
 Create one plan on shared storage:
@@ -172,8 +192,8 @@ the fixed task's `parallelism.shared_environment_max_steps` takes precedence
 when present. Changing that planner option therefore does not override an
 explicit task budget. These match the original evaluation protocol.
 
-Use `create_plan.py --help` for protocol options, including
-`--no-enable-subagents` for a single-agent ablation. Workers accept
+Use `create_plan.py --help` for protocol options; use `--single-agent` rather
+than only `--no-enable-subagents` to select the complete 156 protocol. Workers accept
 `--concurrency` and `--task-retries` (default: 1 retry after an exception).
 Re-run the same worker command to resume: completed valid tasks, including
 ordinary failures, are retained; missing/corrupt/error records are retried.

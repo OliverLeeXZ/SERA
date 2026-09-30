@@ -8,6 +8,19 @@ from dataclasses import dataclass
 from typing import Any
 
 
+class ContextLimitExceededError(RuntimeError):
+    """The server rejected a request because the model context was exhausted."""
+
+
+def _is_context_limit_error(message: str) -> bool:
+    normalized = message.lower()
+    return any(marker in normalized for marker in (
+        "maximum context length", "context length", "max_model_len",
+        "prompt is too long", "input is too long", "too many tokens",
+        "longer than the maximum",
+    ))
+
+
 @dataclass(frozen=True)
 class Completion:
     content: str
@@ -73,7 +86,15 @@ class VLLMChatClient:
                     model=body.get("model"),
                     response_id=body.get("id"),
                 )
-            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, KeyError, IndexError, json.JSONDecodeError) as error:
+            except urllib.error.HTTPError as error:
+                body = error.read().decode("utf-8", errors="replace")
+                message = f"HTTP {error.code}: {body or error.reason}"
+                if _is_context_limit_error(message):
+                    raise ContextLimitExceededError(message) from error
+                last_error = RuntimeError(message)
+                if attempt < self.retries:
+                    time.sleep(min(8.0, 2.0**attempt))
+            except (urllib.error.URLError, TimeoutError, KeyError, IndexError, json.JSONDecodeError) as error:
                 last_error = error
                 if attempt < self.retries:
                     time.sleep(min(8.0, 2.0**attempt))
