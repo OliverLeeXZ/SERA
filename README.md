@@ -1,55 +1,154 @@
-# SERA
+# SERA: Self-Evaluating Recursive Agents
 
-Official implementation of "Self-Evaluating Recursive Agents".
+<p align="center">
+  <a href="https://github.com/OliverLeeXZ/SERA"><img src="https://img.shields.io/badge/GitHub-Code-181717?logo=github" alt="GitHub code"></a>
+  <a href="https://huggingface.co/Litux12138/SERA"><img src="https://img.shields.io/badge/Hugging%20Face-Checkpoints-ffcc4d?logo=huggingface" alt="Hugging Face checkpoints"></a>
+  <img src="https://img.shields.io/badge/Python-3.12-3776ab?logo=python" alt="Python 3.12">
+</p>
 
-For training and local-GPU evaluation, use Python 3.12 and install the complete
-environment from the repository root with `pip install -r requirements.txt`.
-The smaller `Evaluation/requirements-serving.txt` is available when only local
-evaluation serving is needed.
+SERA trains **one recursive language-model policy** to decompose tasks, solve
+subtasks, and evaluate its own work. Before delegating, a parent agent writes a
+weighted rubric for the child. The same policy later scores the child's result
+against that frozen rubric, providing a continuous execution reward. Training
+the rubric to distinguish verified successful from unsuccessful continuations
+turns self-evaluation into a learned capability rather than a fixed prompt.
 
-## Scripts
+This repository contains the training recipes, fixed datasets, evaluation
+programs, and test-time scaling code, and links to the public TextCraft-Synth
+and TextWorld-Sync checkpoints. No scheduler-specific job scripts, API keys,
+training outputs, or rollout logs are included.
 
-All evaluation and training launch scripts live in [Scripts/](Scripts/README.md):
-`Eval/` for evaluation, `Main/` for the main training recipes, `Ablation/` for
-rubric-design training ablations, and `TestTimeScaling/` for recursive Best-of-N.
+## Highlights
 
-## Dataset
+1. **Self-evaluating execution:** policy-generated, subtask-specific rubrics
+   provide continuous credit to recursive agents. The root task remains
+   programmatically verified.
+2. **Credit for decomposition:** a leaf-coverage reward credits delegation
+   decisions according to the work organized by their subtrees, separately
+   from execution and rubric-generation tokens.
+3. **Rubrics trained on verified outcomes:** counterfactual continuations teach
+   a rubric to rank successes above failures. TextCraft uses a program
+   verifier; TextWorld uses an external judge *for rubric training*, while
+   ordinary rubric-based execution uses the policy's own scores.
+4. **Inference-time reuse:** the learned rubric can also select among recursive
+   candidate resolutions in TextWorld-Sync Best-of-N evaluation.
 
-All training, validation and evaluation data live in
-[Dataset/](Dataset/README.md). `Dataset/generation/` includes a standalone
-TextWorld generator that writes directly into those three splits.
+The full SERA recipe alternates execution, decomposition, and rubric-generation
+updates in a **16:2:2** cycle. The same stage kernel also runs the RAO and
+ablation recipes, so method comparisons share the training infrastructure.
 
-## Runtime
+## Benchmarks and checkpoints
 
-[Runtime/](Runtime/README.md) is the common environment, Agent/trajectory,
-prompt, rubric and ordinary inference core used by Training, Evaluation and
-TestTimeScale. Training-only optimization/credit assignment and evaluation/
-Best-of-N rollout policies remain in their respective directories.
+| Benchmark | Evaluation tasks | Public checkpoint | Training step |
+| --- | ---: | --- | ---: |
+| TextCraft-Synth | 632 | [TextCraft-step250](https://huggingface.co/Litux12138/SERA/tree/main/TextCraft-step250) | 250 |
+| TextWorld-Sync | 1,400 | [TextWorld-step400](https://huggingface.co/Litux12138/SERA/tree/main/TextWorld-step400) | 400 |
 
-## Evaluation
+Both benchmarks contain Easy, Medium, Hard, and Extreme tasks. TextWorld-Sync
+extends TextWorldExpress CookingWorld into a shared-state, recursive
+multi-agent environment with seven task families; its fixed test set has 350
+tasks per difficulty. The datasets are bundled in [Dataset/](Dataset/README.md),
+including the TextWorld generation program. The reported three-run mean
+success rates for SERA are **74.31%** on TextCraft-Synth and **65.07%** on
+TextWorld-Sync; see the paper for full difficulty breakdowns and comparisons.
 
-See [Evaluation/README.md](Evaluation/README.md) for portable TextCraft-Synth and
-TextWorld-Sync evaluation, including recursive and 155/156 single-Agent
-protocols, multi-machine sharding and resumable runs.
+## Quickstart: download and evaluate
+
+Use Python 3.12 and a CUDA/PyTorch environment compatible with the pinned
+dependencies. From the repository root:
+
+```bash
+pip install -r requirements.txt
+python Scripts/Download/download.py
+
+# Inspect settings first; these commands do not start model servers or use GPUs.
+bash Scripts/Eval/evaluate_textcraft_ckpt.sh --dry-run
+bash Scripts/Eval/evaluate_textworld_ckpt.sh --dry-run
+
+# Run the full recursive-agent evaluations.
+bash Scripts/Eval/evaluate_textcraft_ckpt.sh
+bash Scripts/Eval/evaluate_textworld_ckpt.sh
+```
+
+The download command reads the public
+[SERA model repository](https://huggingface.co/Litux12138/SERA) and stores its
+two Hugging Face-format checkpoints under `Evaluation/ckpt/` (ignored by Git).
+Use `--checkpoint textcraft` or `--checkpoint textworld` to download only one.
+The evaluation launchers start local vLLM replicas on visible GPUs, evaluate
+the fixed test sets, aggregate results, and stop only the servers they started.
+Results default to ignored, timestamped directories under `Evaluation/outputs/`.
+If you have another HF-format model, use
+`Scripts/Eval/textcraft/run.sh` or `Scripts/Eval/textworld/run.sh` with its path
+instead. Single-agent baseline launchers are also available; they are a
+different protocol from the recursive checkpoints above.
+
+For multi-machine evaluation, use one shared output directory and a distinct
+shard index per machine. For example, on the first of four machines:
+
+```bash
+bash Scripts/Eval/evaluate_textworld_ckpt.sh \
+  --num-shards 4 --shard-index 0 --output-root /shared/sera/textworld-eval
+```
+
+Set `--shard-index` to 1, 2, and 3 on the remaining machines. Repeating the
+same command and output root resumes completed shards/tasks. See
+[Evaluation/README.md](Evaluation/README.md) for protocol details, local serving
+options, and low-level workers.
 
 ## Training
 
-See [Training/README.md](Training/README.md) for the twelve TextCraft/TextWorld
-main training recipes plus four TextCraft ablations, two shared environment
-configs, and one policy-version stage kernel shared by RAO, decomposition
-reward, and rubric-training experiments.
-The [paper-to-recipe mapping](Training/README.md#recipes-and-source-correspondence)
-uses the main-table names RAO, RAO + D, RAO + RT, SERA w/o D & RT,
-SERA w/o D, and SERA; existing script names remain stable.
+The main recipes cover RAO, SERA, and their execution/decomposition/rubric
+training ablations on both benchmarks. Inspect a configuration without Ray,
+GPU access, or judge requests:
+
+```bash
+bash Scripts/Main/textcraft/three_stage.sh --dry-run
+bash Scripts/Main/textworld/three_stage.sh --dry-run
+```
+
+Actual training requires an existing Ray cluster, the pinned AReaL runtime,
+and a shared output root; the scripts do not submit cluster jobs. TextWorld
+recipes that train rubrics with external labels additionally require an
+OpenAI-compatible judge endpoint and credentials on every trainer worker.
+Read [Training/README.md](Training/README.md) for the six paper-method recipes,
+two shared configs, ablations, cluster setup, and resume semantics.
 
 ## Test-time scaling
 
-See [TestTimeScale/README.md](TestTimeScale/README.md) for recursive TextWorld
-Best-of-N with the paper's Policy judge or Kimi judge selectors. Evaluation
-and test-time scaling both provide model-path-only bash launchers under Scripts.
+TextWorld-Sync supports recursive **N=2** node selection with either the
+policy's own rubric or an external Kimi-compatible judge:
 
-## Local tests
+```bash
+# No external judge or credentials are needed for policy selection.
+bash Scripts/TestTimeScaling/run_policy.sh \
+  Evaluation/ckpt/TextWorld-step400 --dry-run
 
-Development tests live under `test/{dataset,evaluation,runtime,test_time_scaling,training}/`
-in the local checkout. The root `.gitignore` excludes `test/`, so this suite
-is not included in the published repository.
+# For an actual N=2 policy-judge evaluation, omit --dry-run.
+bash Scripts/TestTimeScaling/run_policy.sh \
+  Evaluation/ckpt/TextWorld-step400
+```
+
+External-judge configuration, branch-state semantics, sharding, and resume
+behavior are documented in [TestTimeScale/README.md](TestTimeScale/README.md).
+
+## Repository layout
+
+| Directory | Contents |
+| --- | --- |
+| [Dataset/](Dataset/README.md) | Bundled training, validation, evaluation, and TextWorld generation data |
+| [Runtime/](Runtime/README.md) | Shared environments, recursive-agent trajectory logic, prompts, rubrics, and inference utilities |
+| [Training/](Training/README.md) | Shared stage kernel, credit assignment, configs, and training workflows |
+| [Evaluation/](Evaluation/README.md) | Fixed-benchmark evaluators, serving, sharding, and result aggregation |
+| [TestTimeScale/](TestTimeScale/README.md) | Recursive TextWorld Best-of-N selection |
+| [Scripts/](Scripts/README.md) | Download, evaluation, main training, ablation, and scaling launchers |
+
+The evaluation and training programs read from the root `Dataset/`; no copied
+datasets are required inside those modules. `SERA_DATASET_ROOT` can point to
+another dataset root with the same layout.
+
+## Acknowledgments
+
+SERA builds on the recursive-agent setting of RAO, the AReaL training
+framework, and TextWorldExpress's CookingWorld task design. Third-party
+notices for vendored components and dataset assets are retained alongside
+their source files.

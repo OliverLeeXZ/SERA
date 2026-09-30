@@ -7,7 +7,10 @@ by the Runtime extraction.
 
 ```
 Scripts/
+  Download/download.py         # public TextCraft/TextWorld paper checkpoints
   Eval/
+    evaluate_textcraft_ckpt.sh # evaluate downloaded TextCraft-step250
+    evaluate_textworld_ckpt.sh # evaluate downloaded TextWorld-step400
     textcraft/{run.sh,run_single_agent.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
     textworld/{run.sh,run_single_agent.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
   Main/
@@ -19,6 +22,23 @@ Scripts/
 ```
 
 ## Evaluation
+
+Download the two public paper checkpoints and evaluate them directly:
+
+```bash
+python Scripts/Download/download.py
+bash Scripts/Eval/evaluate_textcraft_ckpt.sh
+bash Scripts/Eval/evaluate_textworld_ckpt.sh
+```
+
+The checkpoints are saved under `Evaluation/ckpt/TextCraft-step250` and
+`Evaluation/ckpt/TextWorld-step400` (ignored by Git). Download just one with
+`--checkpoint textcraft` or `--checkpoint textworld`; use `--dry-run` to inspect
+destinations without network access. The evaluation scripts accept the same
+options as `Evaluation/run.py`, including `--dry-run`, `--gpus`, `--output-root`,
+`--num-shards` and `--shard-index`. For a multi-machine run, download the
+checkpoint on each machine, set the same shared `--output-root`, and use a
+different `--shard-index` per machine.
 
 The simplest GPU launch needs only your HF-format model directory (or HF model
 ID). Install `Evaluation/requirements-serving.txt` first:

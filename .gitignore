@@ -21,6 +21,7 @@ htmlcov/
 /Dataset/**/.*.lock
 /Evaluation/outputs/
 /Evaluation/runs/
+/Evaluation/ckpt/
 /TestTimeScale/outputs/
 /Training/outputs/
 
