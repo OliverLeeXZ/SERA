@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Paper method: RAO + RT (Rubric Training). Source: 172.
+# Paper method: Recursive Agent Optimization with Rubric Training. Source: 172.
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 TRAINING_DIR=$(cd -- "${SCRIPT_DIR}/../../../Training" && pwd)
 exec "${PYTHON:-python}" "${TRAINING_DIR}/launch.py" \
-  --environment textworld --experiment rao_rubric_training \
+  --environment textworld --experiment rao_with_rubric_training \
   --set seed=362 \
   --set 'execution_reward="rao"' \
   --set 'stage_schedule="execution:16,rubric_generation:2"' \

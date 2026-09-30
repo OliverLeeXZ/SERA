@@ -1,9 +1,8 @@
 # Scripts
 
-Launch entry points are kept here; implementations and shared configs remain in
+Launch entry points live here; implementations and shared configs live in
 `Training/`, `Evaluation/` and `TestTimeScale/`, backed by the common `Runtime/`.
-Data is read from the root `Dataset/` directory. Launch commands are unchanged
-by the Runtime extraction.
+Data is read from the root `Dataset/` directory.
 
 ```
 Scripts/
@@ -14,8 +13,8 @@ Scripts/
     textcraft/{run.sh,run_single_agent.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
     textworld/{run.sh,run_single_agent.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
   Main/
-    textcraft/*.sh             # six existing training recipes
-    textworld/*.sh             # six existing training recipes
+    textcraft/*.sh             # six main training recipes
+    textworld/*.sh             # six main training recipes
   Ablation/
     textcraft/*.sh             # four rubric-design training ablations
   TestTimeScaling/{run_policy.sh,run_kimi.sh,create_plan.py,evaluate_shard.py,aggregate_results.py}
@@ -47,7 +46,7 @@ ID). Install `Evaluation/requirements-serving.txt` first:
 bash Scripts/Eval/textcraft/run.sh /path/to/hf-checkpoint
 bash Scripts/Eval/textworld/run.sh /path/to/hf-checkpoint
 
-# Single-Agent baselines: original 155/156 protocols on the same test sets.
+# Single-agent baselines on the same test sets.
 bash Scripts/Eval/textcraft/run_single_agent.sh /path/to/hf-checkpoint
 bash Scripts/Eval/textworld/run_single_agent.sh /path/to/hf-checkpoint
 ```
@@ -93,26 +92,26 @@ sharding and resume options as evaluation. The implementation is in
 ## Main training recipes
 
 ```bash
-bash Scripts/Main/textcraft/three_stage.sh --dry-run
-bash Scripts/Main/textworld/three_stage.sh --dry-run
+bash Scripts/Main/textcraft/sera.sh --dry-run
+bash Scripts/Main/textworld/sera.sh --dry-run
 ```
 
-Each environment contains `rao.sh`, `rubric_reward.sh`, `rao_leaf.sh`,
-`rubric_reward_training.sh`, `three_stage.sh` and `rao_rubric_training.sh`.
-The paper's main-table labels map to the stable launch files as follows:
+Each environment contains the same six main training recipes. Filenames and
+default `--experiment` identifiers correspond to the paper methods:
 
 | Paper method | Launch file in `textcraft/` or `textworld/` |
 |---|---|
 | RAO | `rao.sh` |
-| RAO + D | `rao_leaf.sh` |
-| RAO + RT | `rao_rubric_training.sh` |
-| SERA w/o D & RT | `rubric_reward.sh` |
-| SERA w/o D | `rubric_reward_training.sh` |
-| SERA | `three_stage.sh` |
+| RAO with Decomposition Reward | `rao_with_decomposition_reward.sh` |
+| RAO with Rubric Training | `rao_with_rubric_training.sh` |
+| SERA without Decomposition Reward and Rubric Training | `sera_without_decomposition_reward_and_rubric_training.sh` |
+| SERA without Decomposition Reward | `sera_without_decomposition_reward.sh` |
+| SERA | `sera.sh` |
 
-**D** means Decomposition reward and **RT** means Rubric Training; rubric
-scoring without rubric-generation training is not RT.
-Arguments, overrides and training behavior are unchanged. See
+In the paper, **SERA** expands to Self-Evaluating Recursive Agents, **RAO** to
+Recursive Agent Optimization, **D** to Decomposition Reward, and **RT** to
+Rubric Training. Scoring execution with a rubric alone is not rubric training.
+To resume, repeat the recipe with the same output root and run name. See
 [Training/README.md](../Training/README.md) for dependencies, cluster setup and
 launch/resume instructions. `PYTHON=/path/to/python` selects the interpreter.
 
@@ -122,21 +121,22 @@ are resolved relative to each script, not your current working directory.
 
 ## Ablation training recipes
 
-| Script under `Ablation/textcraft/` | Generator | Scorer | Training | Source experiment |
-| --- | --- | --- | --- | --- |
-| `kimi_rubric_policy_scorer.sh` | Kimi | Policy | -- | 159 |
-| `kimi_rubric_kimi_scorer.sh` | Kimi | Kimi | -- | 145 |
-| `global_rubric_policy_scorer.sh` | Policy (global) | Policy | -- | 4 |
-| `rubric_training_discriminativeness.sh` | Policy | Policy | Rank+Disc. | 106 |
+| Script under `Ablation/textcraft/` | Generator | Scorer | Training |
+| --- | --- | --- | --- |
+| `kimi_rubric_policy_scorer.sh` | Kimi | Policy | None |
+| `kimi_rubric_kimi_scorer.sh` | Kimi | Kimi | None |
+| `global_rubric_policy_scorer.sh` | Policy (global) | Policy | None |
+| `rubric_training_discriminativeness.sh` | Policy | Policy | Ranking + Discriminativeness |
 
-The main-recipe `rubric_reward_training.sh` is the paper's Policy / Policy /
-Rank ablation row. The first three rows above do not train rubric generation;
-`Rank+Disc.` trains it with ranking plus discriminativeness credit.
+The main recipe `sera_without_decomposition_reward.sh`
+is the paper's Policy / Policy / Ranking ablation row. The first three rows
+above do not train rubric generation; Ranking + Discriminativeness trains it
+with ranking plus discriminativeness credit.
 
 All four use `Training/launch.py`, the shared TextCraft config and the same
 policy-version stage kernel as Main. The global template is bundled at
 `Training/assets/textcraft_global_rubric.json`; it is not generated dynamically
-and needs no external model. The 106 objective uses success/failure ordering
+and needs no external model. The discriminativeness objective uses success/failure ordering
 plus population score dispersion; scorer completions remain evaluation-only.
 
 ```bash
@@ -155,9 +155,9 @@ bash Scripts/Ablation/textcraft/kimi_rubric_policy_scorer.sh \
 ```
 
 `JUDGE_API_URL` is an endpoint fallback when `KIMI_BASE_URL` is not set.
-Endpoint/model can also be selected using the existing config override mechanism
+Endpoint/model can also be selected using the config override mechanism
 (the environment model override takes precedence). Credentials are only read
 from environment variables, never from script literals or resolved YAML files.
 The global and discriminativeness recipes are entirely policy/program-backed:
-they require no Kimi endpoint or key. Existing cluster, model-path and resume
-instructions in the Training README apply unchanged.
+they require no Kimi endpoint or key. See the Training README for cluster,
+model-path, and resume configuration.

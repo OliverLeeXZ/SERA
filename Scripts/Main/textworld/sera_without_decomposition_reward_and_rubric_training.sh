@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Paper method: SERA w/o D & RT. Training/evaluated-checkpoint source: 82.
+# Paper method: Self-Evaluating Recursive Agents without Decomposition Reward and Rubric Training. Training/evaluated-checkpoint source: 82.
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 TRAINING_DIR=$(cd -- "${SCRIPT_DIR}/../../../Training" && pwd)
 exec "${PYTHON:-python}" "${TRAINING_DIR}/launch.py" \
-  --environment textworld --experiment rubric_reward \
+  --environment textworld --experiment sera_without_decomposition_reward_and_rubric_training \
   --set seed=362 \
   --set 'execution_reward="rubric"' \
   --set 'stage_schedule="execution:1"' \

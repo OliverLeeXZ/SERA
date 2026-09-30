@@ -15,8 +15,6 @@ required, and the scripts never request or submit GPU jobs.
 This directory includes evaluation-specific orchestration; common environments,
 Agents/trajectories, prompts and inference helpers live in
 [Runtime/](../Runtime/README.md). Keep Runtime alongside Evaluation and Dataset.
-it does not include training code, checkpoints, API credentials, job-submission
-scripts, logs or previously generated results.
 Fixed datasets live centrally in [Dataset/](../Dataset/README.md). Default
 evaluation plans read `textcraft_*` or `textworld_*` files directly from `Dataset/eval/`.
 Set `SERA_DATASET_ROOT` to select another root with the same layout. Training
@@ -43,8 +41,7 @@ does not count as root-task success.
 Task generation uses seeded sampling within four difficulty-specific parameter
 bands, validates recipe availability, and records the concrete parameters in a
 fixed manifest. The test set crosses **seven task families × four difficulty
-levels × 50 instances = 1,400 tasks**. V9 retains the preceding fixed test set;
-its training/validation change concerns sampling quotas, not a new test set.
+levels × 50 instances = 1,400 tasks**.
 This evaluation release reconstructs those fixed tasks using its pure-Python
 composite-world implementation; it does not call the original JVM simulator or
 regenerate test tasks at evaluation time.
@@ -53,7 +50,7 @@ See [TextWorld/README.md](TextWorld/README.md#dataset-construction-and-changes-f
 for the seven families, difficulty bands and generation details.
 
 Launch scripts live in `../Scripts/Eval/textcraft/` and
-`../Scripts/Eval/textworld/`; no script directories remain in Evaluation.
+`../Scripts/Eval/textworld/`.
 See [Scripts/README.md](../Scripts/README.md) for their locations.
 Each benchmark has three low-level entry points: `create_plan.py`, `evaluate_shard.py` and
 `aggregate_results.py`. A single shard runs on one machine; multiple shards can
@@ -65,19 +62,6 @@ Plans use relative shard/output paths and can be moved as a unit. Run identities
 and manifest hashes guard against mixing models, protocols or task partitions;
 file locks prevent accidentally running the same shard twice. On Linux/shared
 storage, filesystem `flock` and atomic rename must be supported.
-
-Run-independent tests (no GPU or model server required):
-
-```bash
-python -m unittest discover -s test/evaluation -v
-```
-
-The local-only test suite is excluded by the root `.gitignore`. Tests that
-exercise the TextCraft runtime additionally require its dependencies
-and Python 3.12. These are local/mock-server tests, not full model evaluations.
-
-The vendored Platoon runtime retains its
-[MIT license notice](../Runtime/licenses/platoon-MIT.txt).
 
 ## Evaluate with only a model path
 

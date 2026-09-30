@@ -17,11 +17,9 @@ standalone generator that writes directly to these directories.
 The starting point is TextWorldExpress's **CookingWorld**, where an agent
 collects ingredients, performs the required cutting/cooking operations, prepares
 a meal and eats it. TextWorld-Sync retains that task vocabulary and uses the
-original `cooking_world.json` database as the source of valid foods, preparation
-combinations and candidate source locations. It is an extended benchmark, **not
-an unchanged rerun of standard CookingWorld**. The bundled runtime reimplements
-the composite world in Python rather than running the original single-avatar
-JVM game directly.
+`cooking_world.json` database as the source of valid foods, preparation
+combinations and candidate locations. The bundled Python runtime extends
+CookingWorld into a composite environment with shared-state recursive agents.
 
 The changes are:
 
@@ -82,8 +80,8 @@ Extreme uses a coarser description. Inspect each task's `game_params` and
 and effective runtime settings.
 
 The fixed test set contains **50 tasks in every family × difficulty cell**:
-7 × 4 × 50 = 1,400 tasks. V9 retains the fixed V8 test instances and changes
-training/validation quotas: 1,500 training tasks (900 Medium, 150 Hard, 450
+7 × 4 × 50 = 1,400 tasks. The training and validation splits contain
+1,500 training tasks (900 Medium, 150 Hard, 450
 Extreme) and 200 validation tasks (50 per level). The fixed test manifest,
 training/validation splits, generation tools and source database are bundled
 centrally in `Dataset/`. Evaluation reconstructs manifest tasks without new
@@ -127,13 +125,13 @@ python Scripts/Eval/textworld/aggregate_results.py \
 Use a unique run directory for each checkpoint and independent repeat. Served
 model IDs are recorded, but model weights are not automatically fingerprinted.
 
-## Single-Agent protocol (source project 156)
+## Single-agent protocol
 
 The same 1,400 tasks, composite world, HTTP client, sharding and aggregation
 are reused. The single-Agent prompt omits delegation, depth is zero and the
 root receives 200 model steps. Temperature 0, reasoning enabled, the global
-environment-action budget and the 13,312/10,240/3,072
-context/prompt/completion limits are unchanged. Unlike recursive evaluation,
+environment-action budget, and context/prompt/completion limits of
+13,312/10,240/3,072 apply. Unlike recursive evaluation,
 the complete prompt history is retained; crossing the input limit terminates
 the trajectory as a failure rather than dropping earlier turns.
 
@@ -190,10 +188,10 @@ caps 10,240/3,072; root/subagent budgets 20/20; maximum recursion depth 3;
 subagents enabled. The global environment-action budget defaults to 100, but
 the fixed task's `parallelism.shared_environment_max_steps` takes precedence
 when present. Changing that planner option therefore does not override an
-explicit task budget. These match the original evaluation protocol.
+explicit task budget.
 
 Use `create_plan.py --help` for protocol options; use `--single-agent` rather
-than only `--no-enable-subagents` to select the complete 156 protocol. Workers accept
+than only `--no-enable-subagents` to select the complete single-agent protocol. Workers accept
 `--concurrency` and `--task-retries` (default: 1 retry after an exception).
 Re-run the same worker command to resume: completed valid tasks, including
 ordinary failures, are retained; missing/corrupt/error records are retried.
@@ -219,5 +217,5 @@ tasks are listed explicitly. `final_report.json` is emitted only when all 1,400
 tasks have terminal records; `--require-complete` exits 2 otherwise.
 
 The overall rate is task-weighted; for the complete balanced V9 test set it also
-equals the four-difficulty macro average. Per-shard legacy `accuracy` fields
+equals the four-difficulty macro average. Per-shard `accuracy` fields
 exclude errors, so use the aggregate report for final benchmark numbers.

@@ -3,11 +3,10 @@
 Evaluates a recursive CodeAct agent on all **632 fixed validation tasks**:
 147 Easy, 213 Medium, 136 Hard and 136 Extreme. The manifest and matching task
 payloads are included; synthetic recipes are regenerated deterministically.
-The full-test runner lives in `textcraft_fulltest/`; the old 100-task
-subsample module is not included.
+The full-test runner lives in `textcraft_fulltest/`.
 Success is determined by the environment's root-task completion check, not by
-an external LLM judge. The default is the original recursive, single-trajectory
-evaluation; the separate 155-style single-Agent protocol is also supported.
+an external LLM judge. The default is recursive, single-trajectory evaluation;
+a single-agent protocol is also supported.
 
 ## Setup
 
@@ -25,7 +24,7 @@ least 10,240 tokens. The evaluator sends Python code to an embedded IPython
 executor: **model-generated code is not a security sandbox**. Run it in an
 isolated container/account with no sensitive credentials or writable host data.
 
-No installation of the original training repository is needed. The shared
+The shared
 `Runtime/vendor/platoon/` directory contains the execution core and prompts.
 Keep `Scripts/`, `Evaluation/`, `Runtime/` and the root `Dataset/` directory together. The evaluator
 reads `textcraft_*` manifests and task payloads from `Dataset/eval/`; no data is
@@ -52,13 +51,13 @@ python Scripts/Eval/textcraft/aggregate_results.py \
 The served model ID is recorded, but weights are not fingerprinted. Use a
 different run directory for each checkpoint and every independent repeat.
 
-## Single-Agent protocol (source project 155)
+## Single-agent protocol
 
 The same 632-task manifest, TextCraft environment, model client, shard runner
 and aggregation code are reused. Only the agent/prompt and rollout limits
-change: use the nonrecursive `TextCraftAgent`/`create_synth_env`, 200 root steps
-and depth zero; temperature 0 and the 10,240/9,728/512 context/prompt/completion
-limits stay unchanged. No SubAgent action is exposed. With a local checkpoint:
+change: use the nonrecursive `TextCraftAgent`/`create_synth_env`, 200 root steps,
+depth zero, temperature 0, and context/prompt/completion limits of
+10,240/9,728/512. No subagent action is exposed. With a local checkpoint:
 
 ```bash
 bash Scripts/Eval/textcraft/run_single_agent.sh /path/to/hf-checkpoint
@@ -97,7 +96,7 @@ and collect the resulting `shards/` directories into one run root to aggregate.
 
 ## Protocol, resume and results
 
-Defaults preserve the original evaluation: temperature 0; context 10,240;
+Defaults: temperature 0; context 10,240;
 prompt/completion caps 9,728/512; root/subagent budgets 20/20; maximum recursive
 depth 3; one trajectory per task. Budget/temperature options belong to
 `create_plan.py` so all workers share the same protocol. Workers accept
@@ -128,5 +127,5 @@ not successes). Both are fractions; multiply by 100 for percentages.
 `--require-complete` exits with status 2 if any are still missing.
 
 The overall rate is **task-weighted**, not the unweighted average of the four
-difficulty rates. Per-shard legacy summaries retain their `accuracy` field
+difficulty rates. Per-shard summaries include an `accuracy` field
 (successful/valid, excluding errors); use the aggregate for benchmark reporting.

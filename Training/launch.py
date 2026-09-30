@@ -93,7 +93,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--environment", choices=["textcraft", "textworld"], required=True)
     parser.add_argument("--experiment", required=True,
-                        help="Stable recipe ID; paper-facing name is printed at launch")
+                        help="Paper method ID matching the script filename; legacy IDs are accepted for resume")
     parser.add_argument("--run-name", default="run1", help="Keep this and the output root fixed to resume")
     parser.add_argument("--model", help="Hugging Face model ID or model path visible on every node")
     parser.add_argument("--output-root", help="Shared filesystem directory visible at the same path on every node")

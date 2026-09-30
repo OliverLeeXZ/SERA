@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Paper method: SERA (rubric execution + D + RT). Source: 101.
+# Paper method: Self-Evaluating Recursive Agents without Decomposition Reward. Source: 87.
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 TRAINING_DIR=$(cd -- "${SCRIPT_DIR}/../../../Training" && pwd)
 exec "${PYTHON:-python}" "${TRAINING_DIR}/launch.py" \
-  --environment textcraft --experiment three_stage \
+  --environment textcraft --experiment sera_without_decomposition_reward \
   --set seed=353 \
   --set 'execution_reward="rubric"' \
-  --set 'stage_schedule="execution:16,delegation:2,rubric_generation:2"' \
+  --set 'stage_schedule="execution:16,rubric_generation:2"' \
   --set stage_cycles=-1 \
   --set rollout.max_concurrent_rollouts=24 \
   --set rollout.max_head_offpolicyness=0 \
@@ -29,13 +29,6 @@ exec "${PYTHON:-python}" "${TRAINING_DIR}/launch.py" \
   --set 'rubric_subagent_reward.artifact_dir="rubric_reward_artifacts"' \
   --set 'rubric_subagent_reward.failure_policy="drop_trajectory"' \
   --set 'rubric_subagent_reward.extra_body.reasoning_effort="none"' \
-  --set leaf_credit.filter_zero_variance_groups=true \
-  --set leaf_credit.invalid_delegation_reward=0.0 \
-  --set 'leaf_credit.launch_advantage_mode="reward_first_root_balanced"' \
-  --set 'leaf_credit.launch_credit_mode="leaf"' \
-  --set leaf_credit.subagent_success_gate=false \
-  --set leaf_credit.workload_weight_cap=1.0 \
-  --set 'leaf_credit.output_dir="leaf_reward_artifacts"' \
   --set rubric_generation_ranking.branching_factor=8 \
   --set rubric_generation_ranking.max_counterfactual_envs_per_rollout=16 \
   --set rubric_generation_ranking.margin=0.2 \

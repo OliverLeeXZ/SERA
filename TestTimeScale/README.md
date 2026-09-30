@@ -26,9 +26,8 @@ branch's committed state, not the pre-delegation snapshot.
 - **Kimi judge (`selection_mode=oracle`):** an external OpenAI-compatible LLM judges
   each completed candidate against the delegated subtask, returning binary
   success. Choose the first judged-successful candidate, or the first candidate
-  with a recorded fallback if none passes. `oracle` is the historical mode name:
-  this is **not** access to ground-truth root-task outcomes. It generates no
-  policy rubric and makes no policy scorer requests.
+  with a recorded fallback if none passes. The CLI value `oracle` selects this
+  external binary judge; root-task success is still checked by the environment.
 - **No selection (`N=1`):** a single rollout without candidate selection, as
   reported in the paper's test-time-scaling table.
 - Root success always comes from the environment program, not a judge score.
@@ -37,13 +36,12 @@ branch's committed state, not the pre-delegation snapshot.
 
 Defaults: **N=2**, root temperature 0, candidate temperature 1, rubric generation
 temperature 0, policy scoring temperature 0; root/child step limits 20, depth
-limit 3; context 13,312, prompt budget 10,240, completion budget 3,072. This is
-not the mixed-temperature 0/0.7 protocol: all candidate branches use the same
-candidate temperature. Override it explicitly if needed.
+limit 3; context 13,312, prompt budget 10,240, completion budget 3,072.
+All candidate branches use the same candidate temperature.
 
 The task-wide cumulative fork cap defaults to **32**. It counts every created
 candidate coordinator, including discarded branches and nested calls, rather
-than just live environments. Following the source evaluator, a delegation
+than just live environments. A delegation
 that would exceed the cap creates no candidate: it returns a recorded
 "complete this delegation locally" message so the parent can continue solving.
 Reaching the cap does not itself mark the root task failed. Step/depth and
@@ -127,21 +125,7 @@ support `--help`. They do not start servers, so they can be used independently
 with existing endpoints. `create_plan.py` additionally exposes all root/child
 budgets and external judge parameters.
 
-## Provenance and tests
+## Attribution
 
-The recursive evaluator, selector and external judge are ported from the
-internal TextWorld BestOfN evaluator (project 174). Private endpoints, scheduler
-wrappers, retry-job scripts, credentials, logs and checkpoints are excluded.
-The default N is 2 instead of the original source's generic default of 4.
-Rubric prompt/parsing helpers are shared through Runtime, without importing
-Training. The vendored Platoon runtime retains its
+The vendored Platoon runtime includes its
 [MIT license notice](../Runtime/licenses/platoon-MIT.txt).
-
-```bash
-python -m unittest discover -s test/test_time_scaling -v
-python -m unittest discover -s test/evaluation -v
-```
-
-These local-only tests are ignored by Git and use CPU/mock APIs, not a claim
-that a real GPU checkpoint evaluation
-has been run.

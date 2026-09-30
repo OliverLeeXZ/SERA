@@ -10,7 +10,7 @@ Dataset/
     textworld_train.jsonl                        # 1,500
     textworld_multidish_train_1500_v9.json
   validation/
-    textcraft_synth_val.jsonl                    # 632 original validation-pool tasks
+    textcraft_synth_val.jsonl                    # 632 validation-pool tasks
     textworld_dev.jsonl                          # 200 (50 per difficulty)
     textworld_multidish_validation_200_v9.json
   eval/
@@ -31,18 +31,17 @@ Each split is flat: environment-prefixed files live directly inside it, with no
 `textcraft/` or `textworld/` subdirectories. Training and evaluation use the same
 central path resolver; already-prefixed names are not prefixed twice.
 
-The TextCraft validation and evaluation payloads intentionally contain the same
-632 original tasks. The historical training recipes use the first 100 eligible
-tasks from this validation pool, while full evaluation uses all 632. This
-reorganization does **not** invent an independent dev split or change the existing
-protocol. A future disjoint validation split would need a separate experiment.
+The TextCraft validation and evaluation payloads contain the same 632 tasks.
+Training constructs a 100-task subset from this pool, with periodic validation
+disabled by default; full evaluation uses all 632. These are not independent
+development and test splits.
 TextWorld has separate generated train/dev/test folds, with training difficulty
 counts Medium=900, Hard=150, Extreme=450 and evaluation counts 350 per difficulty.
 
 ## Generate TextWorld data
 
-Only the Python standard library is needed (Linux). No model, GPU, JVM,
-TextWorldExpress installation, original R3AO path or network access is required.
+The generator uses the Python standard library on Linux and the bundled
+CookingWorld database; no model or GPU is required.
 From the repository root:
 
 ```bash
@@ -70,33 +69,22 @@ for another CookingWorld database. The config's relative database path resolves
 against the config directory, not the current working directory. Commands work
 from any directory when the script is invoked by its absolute path.
 
-The generator preserves source V9 train/dev difficulty quotas and seed/family
-allocation. Test construction uses the retained V8/V9 test matrix (seven task
-families × four difficulties × 50 tasks). Seeded recipe construction, preparation
-availability resampling, descriptions, dependency gates and resource metadata
-reuse the original generation logic. See [Evaluation/TextWorld/README.md](../Evaluation/TextWorld/README.md)
+The generator uses deterministic seeds and split-specific difficulty quotas.
+The test matrix contains seven task families × four difficulties × 50 tasks.
+Recipe construction includes compatible preparation sampling, dependency
+gates, and shared-resource constraints. See
+[Evaluation/TextWorld/README.md](../Evaluation/TextWorld/README.md)
 for task-family and difficulty-band details.
 
 Generated task files are atomically replaced individually after all requested
 splits are generated and validated. Manifests record JSONL, source database and
-configuration hashes; metadata need not have the same hash as the old manifests.
-Consumers keep original task IDs and split names (`train`, `dev`, `test`/`validation`)
-despite the clearer directory names. Restart processes after regeneration to
+configuration hashes. Task records use split names `train`, `dev`, and
+`test`/`validation`. Restart processes after regeneration to
 clear in-memory dataset caches. Existing evaluation plans pin manifest hashes;
 make a new run directory if data changed.
 
-## Attribution and tests
+## Attribution
 
 `cooking_world.json` is from the TextWorldExpress project; its Apache-2.0 license
-is retained in `generation/licenses/`. Recipe generation helpers are extracted
-from the original TextWorld-Sync generators. Dataset/model redistribution rights
-still need review before a public release. The source database retains its
-[Apache-2.0 license](generation/licenses/textworldexpress-Apache-2.0.txt).
-
-```bash
-python -m unittest discover -s test/dataset -v
-python -m unittest discover -s test/evaluation -v
-python -m unittest discover -s test/training -v
-```
-
-These development tests are local-only and excluded by the root `.gitignore`.
+is included at
+[generation/licenses/textworldexpress-Apache-2.0.txt](generation/licenses/textworldexpress-Apache-2.0.txt).

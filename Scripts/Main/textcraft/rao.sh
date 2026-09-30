@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Paper method: RAO. Training source: 142; evaluated checkpoint project: 110.
+# Paper method: Recursive Agent Optimization. Training source: 142; evaluated checkpoint project: 110.
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 TRAINING_DIR=$(cd -- "${SCRIPT_DIR}/../../../Training" && pwd)
 exec "${PYTHON:-python}" "${TRAINING_DIR}/launch.py" \

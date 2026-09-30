@@ -1,6 +1,11 @@
+<p align="center">
+  <img src="./docs/sera/sera_icon_v2.png" alt="SERA robot evaluating its work with a rubric" width="30%">
+</p>
+
 # SERA: Self-Evaluating Recursive Agents
 
 <p align="center">
+  <img src="https://img.shields.io/badge/arXiv-Paper-b31b1b.svg" alt="arXiv paper">
   <a href="https://github.com/OliverLeeXZ/SERA"><img src="https://img.shields.io/badge/GitHub-Code-181717?logo=github" alt="GitHub code"></a>
   <a href="https://huggingface.co/Litux12138/SERA"><img src="https://img.shields.io/badge/Hugging%20Face-Checkpoints-ffcc4d?logo=huggingface" alt="Hugging Face checkpoints"></a>
   <img src="https://img.shields.io/badge/Python-3.12-3776ab?logo=python" alt="Python 3.12">
@@ -15,8 +20,7 @@ turns self-evaluation into a learned capability rather than a fixed prompt.
 
 This repository contains the training recipes, fixed datasets, evaluation
 programs, and test-time scaling code, and links to the public TextCraft-Synth
-and TextWorld-Sync checkpoints. No scheduler-specific job scripts, API keys,
-training outputs, or rollout logs are included.
+and TextWorld-Sync checkpoints.
 
 ## Highlights
 
@@ -33,9 +37,40 @@ training outputs, or rollout logs are included.
 4. **Inference-time reuse:** the learned rubric can also select among recursive
    candidate resolutions in TextWorld-Sync Best-of-N evaluation.
 
-The full SERA recipe alternates execution, decomposition, and rubric-generation
-updates in a **16:2:2** cycle. The same stage kernel also runs the RAO and
-ablation recipes, so method comparisons share the training infrastructure.
+## Method overview
+
+SERA uses a shared policy throughout a recursive tree of agents. Each agent can
+act in the environment, delegate a subtask, and continue after receiving its
+result. The policy also writes and applies the rubrics that evaluate delegated
+work.
+
+<p align="center">
+  <img src="./docs/sera/sera_agent.png" alt="SERA recursive execution and trajectory scoring with a shared policy" width="100%">
+</p>
+
+Figure 1 illustrates recursive execution and subtask evaluation. Parents commit
+weighted rubrics before their children execute, and completed subtasks return
+results to the parent. The root receives the environment's task-success reward.
+The scoring sources shown serve different roles: Recursive Agent Optimization
+(RAO) directly rewards subagent execution with program or LLM judge outcomes,
+while SERA uses the policy's rubric scores for execution and verified outcomes
+to train rubric generation.
+
+<p align="center">
+  <img src="./docs/sera/training.png" alt="SERA alternating execution, leaf-coverage, and rubric-generation credit assignment" width="100%">
+</p>
+
+Figure 2 shows how SERA assigns credit across three alternating training stages.
+Execution rewards train agent trajectories using root-task success or subtask
+rubric scores. Leaf-coverage rewards train delegation goals according to their
+subtree's share of the leaves in a successful task. Rubric-generation rewards
+train evaluation criteria to rank verified successful continuations above
+failed ones from the same cloned state. The colored token spans identify which
+parts receive updates in each stage; rubric scoring itself receives no gradient.
+
+The full SERA recipe repeats these stages in a **16:2:2** cycle. The same stage
+kernel also runs the RAO and ablation recipes, so method comparisons share the
+training infrastructure.
 
 ## Benchmarks and checkpoints
 
@@ -102,8 +137,8 @@ training ablations on both benchmarks. Inspect a configuration without Ray,
 GPU access, or judge requests:
 
 ```bash
-bash Scripts/Main/textcraft/three_stage.sh --dry-run
-bash Scripts/Main/textworld/three_stage.sh --dry-run
+bash Scripts/Main/textcraft/sera.sh --dry-run
+bash Scripts/Main/textworld/sera.sh --dry-run
 ```
 
 Actual training requires an existing Ray cluster, the pinned AReaL runtime,
@@ -142,8 +177,8 @@ behavior are documented in [TestTimeScale/README.md](TestTimeScale/README.md).
 | [TestTimeScale/](TestTimeScale/README.md) | Recursive TextWorld Best-of-N selection |
 | [Scripts/](Scripts/README.md) | Download, evaluation, main training, ablation, and scaling launchers |
 
-The evaluation and training programs read from the root `Dataset/`; no copied
-datasets are required inside those modules. `SERA_DATASET_ROOT` can point to
+The evaluation and training programs read from the root `Dataset/`.
+`SERA_DATASET_ROOT` can point to
 another dataset root with the same layout.
 
 ## Acknowledgments
