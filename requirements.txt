@@ -1,0 +1,12 @@
+# Install from the repository root: pip install -r requirements.txt
+# Shared TextCraft runtime used by training and evaluation.
+-r Runtime/requirements-textcraft.txt
+
+# Training configuration, datasets, and tensor utilities.
+omegaconf>=2.3,<2.4
+datasets==4.3.0
+tensordict
+torchdata
+
+# Pinned AReaL source revision used by the training recipes.
+areal[cuda] @ git+https://github.com/areal-project/AReaL.git@35b57e2d2743f7158894239acda8b71f7226b955

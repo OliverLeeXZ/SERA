@@ -1,0 +1,3 @@
+# Optional GPU dependency for model-path-only bash launchers (source runs used vLLM 0.10.2).
+-r ../Runtime/requirements-textcraft.txt
+vllm==0.10.2

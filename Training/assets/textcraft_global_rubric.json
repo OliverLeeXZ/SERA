@@ -1,0 +1,64 @@
+{
+  "name": "textcraft_global_subagent_rubric_v1",
+  "scope": "subagent_trajectory",
+  "score_range": [0.0, 1.0],
+  "success_gate": "The SubAgent must complete the delegated task and return a truthful, usable result to the Parent Agent. If the delegated task is not completed, the final score must be exactly 0.0.",
+  "failure_conditions": [
+    "The delegated task is not completed.",
+    "The SubAgent stops, crashes, or loops before completing the delegated task.",
+    "The returned result is fabricated or contradicted by the executed actions or final environment state.",
+    "The result omits information required for the Parent Agent to use the completed work."
+  ],
+  "rubric_items": [
+    {
+      "name": "Goal Fulfillment",
+      "weight": 0.4,
+      "description": "Whether the delegated task is completed exactly as requested.",
+      "score_0": "The requested outcome is absent, incorrect, or incomplete.",
+      "score_full": "The complete requested outcome is present and matches the delegated task."
+    },
+    {
+      "name": "Correctness and Grounding",
+      "weight": 0.25,
+      "description": "Whether claims and returned results are supported by executed actions and observed environment states.",
+      "score_0": "The result is fabricated, unsupported, or contradicted by the trajectory or final state.",
+      "score_full": "Every material claim and result is directly supported by the trajectory and final state."
+    },
+    {
+      "name": "Utility to Parent",
+      "weight": 0.15,
+      "description": "Whether the returned result contains the concrete information the Parent Agent needs to continue its task.",
+      "score_0": "The return is missing, vague, or unusable by the Parent Agent.",
+      "score_full": "The return clearly communicates the completed result and all decision-relevant facts."
+    },
+    {
+      "name": "Action Validity",
+      "weight": 0.1,
+      "description": "Whether the SubAgent uses valid actions and avoids harmful operations, invalid resource use, and fabricated execution.",
+      "score_0": "The trajectory relies on invalid actions, harmful operations, or fabricated execution.",
+      "score_full": "All consequential actions are valid, grounded, and compatible with the environment constraints."
+    },
+    {
+      "name": "Efficiency",
+      "weight": 0.1,
+      "description": "Whether the task is completed without unnecessary actions, delegation, or resource consumption.",
+      "score_0": "The trajectory contains severe avoidable waste, repetition, or irrelevant work.",
+      "score_full": "The trajectory completes the task directly with no material unnecessary work."
+    }
+  ],
+  "score_anchors": {
+    "0.0": "The delegated task failed. The success gate is not satisfied.",
+    "0.25": "The delegated task barely succeeded and has major quality problems.",
+    "0.5": "The delegated task succeeded but has substantial omissions, confusion, or inefficiency.",
+    "0.75": "The delegated task was completed correctly with only minor problems.",
+    "1.0": "The delegated task was completed correctly, completely, directly, and efficiently."
+  },
+  "scoring_procedure": [
+    "First evaluate the success gate using only the delegated task, completed trajectory, and final environment state.",
+    "If the success gate fails or any failure condition applies, return exactly 0.0.",
+    "If the success gate passes, score every rubric item in [0, 1] using its fixed definition.",
+    "Compute the weighted sum of the five item scores.",
+    "Use the score anchors to calibrate the final score while preserving the weighted ordering.",
+    "A successful trajectory must receive a final score greater than 0.0 and at most 1.0."
+  ]
+}

@@ -1,0 +1,3174 @@
+{
+  "dataset": "TextCraft-Synth",
+  "split": "val",
+  "selection": "all",
+  "population_size": 632,
+  "difficulty_counts": {
+    "easy": 147,
+    "medium": 213,
+    "hard": 136,
+    "extreme": 136
+  },
+  "tasks": [
+    {
+      "task_id": "textcraft_synth.val.0",
+      "difficulty": "easy",
+      "val_index": 0
+    },
+    {
+      "task_id": "textcraft_synth.val.1",
+      "difficulty": "medium",
+      "val_index": 1
+    },
+    {
+      "task_id": "textcraft_synth.val.2",
+      "difficulty": "medium",
+      "val_index": 2
+    },
+    {
+      "task_id": "textcraft_synth.val.3",
+      "difficulty": "medium",
+      "val_index": 3
+    },
+    {
+      "task_id": "textcraft_synth.val.4",
+      "difficulty": "extreme",
+      "val_index": 4
+    },
+    {
+      "task_id": "textcraft_synth.val.5",
+      "difficulty": "easy",
+      "val_index": 5
+    },
+    {
+      "task_id": "textcraft_synth.val.6",
+      "difficulty": "hard",
+      "val_index": 6
+    },
+    {
+      "task_id": "textcraft_synth.val.7",
+      "difficulty": "extreme",
+      "val_index": 7
+    },
+    {
+      "task_id": "textcraft_synth.val.8",
+      "difficulty": "medium",
+      "val_index": 8
+    },
+    {
+      "task_id": "textcraft_synth.val.9",
+      "difficulty": "easy",
+      "val_index": 9
+    },
+    {
+      "task_id": "textcraft_synth.val.10",
+      "difficulty": "easy",
+      "val_index": 10
+    },
+    {
+      "task_id": "textcraft_synth.val.11",
+      "difficulty": "extreme",
+      "val_index": 11
+    },
+    {
+      "task_id": "textcraft_synth.val.12",
+      "difficulty": "easy",
+      "val_index": 12
+    },
+    {
+      "task_id": "textcraft_synth.val.13",
+      "difficulty": "extreme",
+      "val_index": 13
+    },
+    {
+      "task_id": "textcraft_synth.val.14",
+      "difficulty": "medium",
+      "val_index": 14
+    },
+    {
+      "task_id": "textcraft_synth.val.15",
+      "difficulty": "hard",
+      "val_index": 15
+    },
+    {
+      "task_id": "textcraft_synth.val.16",
+      "difficulty": "easy",
+      "val_index": 16
+    },
+    {
+      "task_id": "textcraft_synth.val.17",
+      "difficulty": "easy",
+      "val_index": 17
+    },
+    {
+      "task_id": "textcraft_synth.val.18",
+      "difficulty": "extreme",
+      "val_index": 18
+    },
+    {
+      "task_id": "textcraft_synth.val.19",
+      "difficulty": "easy",
+      "val_index": 19
+    },
+    {
+      "task_id": "textcraft_synth.val.20",
+      "difficulty": "easy",
+      "val_index": 20
+    },
+    {
+      "task_id": "textcraft_synth.val.21",
+      "difficulty": "medium",
+      "val_index": 21
+    },
+    {
+      "task_id": "textcraft_synth.val.22",
+      "difficulty": "easy",
+      "val_index": 22
+    },
+    {
+      "task_id": "textcraft_synth.val.23",
+      "difficulty": "medium",
+      "val_index": 23
+    },
+    {
+      "task_id": "textcraft_synth.val.24",
+      "difficulty": "easy",
+      "val_index": 24
+    },
+    {
+      "task_id": "textcraft_synth.val.25",
+      "difficulty": "extreme",
+      "val_index": 25
+    },
+    {
+      "task_id": "textcraft_synth.val.26",
+      "difficulty": "extreme",
+      "val_index": 26
+    },
+    {
+      "task_id": "textcraft_synth.val.27",
+      "difficulty": "extreme",
+      "val_index": 27
+    },
+    {
+      "task_id": "textcraft_synth.val.28",
+      "difficulty": "easy",
+      "val_index": 28
+    },
+    {
+      "task_id": "textcraft_synth.val.29",
+      "difficulty": "extreme",
+      "val_index": 29
+    },
+    {
+      "task_id": "textcraft_synth.val.30",
+      "difficulty": "hard",
+      "val_index": 30
+    },
+    {
+      "task_id": "textcraft_synth.val.31",
+      "difficulty": "hard",
+      "val_index": 31
+    },
+    {
+      "task_id": "textcraft_synth.val.32",
+      "difficulty": "medium",
+      "val_index": 32
+    },
+    {
+      "task_id": "textcraft_synth.val.33",
+      "difficulty": "medium",
+      "val_index": 33
+    },
+    {
+      "task_id": "textcraft_synth.val.34",
+      "difficulty": "extreme",
+      "val_index": 34
+    },
+    {
+      "task_id": "textcraft_synth.val.35",
+      "difficulty": "extreme",
+      "val_index": 35
+    },
+    {
+      "task_id": "textcraft_synth.val.36",
+      "difficulty": "easy",
+      "val_index": 36
+    },
+    {
+      "task_id": "textcraft_synth.val.37",
+      "difficulty": "hard",
+      "val_index": 37
+    },
+    {
+      "task_id": "textcraft_synth.val.38",
+      "difficulty": "easy",
+      "val_index": 38
+    },
+    {
+      "task_id": "textcraft_synth.val.39",
+      "difficulty": "hard",
+      "val_index": 39
+    },
+    {
+      "task_id": "textcraft_synth.val.40",
+      "difficulty": "hard",
+      "val_index": 40
+    },
+    {
+      "task_id": "textcraft_synth.val.41",
+      "difficulty": "hard",
+      "val_index": 41
+    },
+    {
+      "task_id": "textcraft_synth.val.42",
+      "difficulty": "hard",
+      "val_index": 42
+    },
+    {
+      "task_id": "textcraft_synth.val.43",
+      "difficulty": "medium",
+      "val_index": 43
+    },
+    {
+      "task_id": "textcraft_synth.val.44",
+      "difficulty": "medium",
+      "val_index": 44
+    },
+    {
+      "task_id": "textcraft_synth.val.45",
+      "difficulty": "medium",
+      "val_index": 45
+    },
+    {
+      "task_id": "textcraft_synth.val.46",
+      "difficulty": "easy",
+      "val_index": 46
+    },
+    {
+      "task_id": "textcraft_synth.val.47",
+      "difficulty": "easy",
+      "val_index": 47
+    },
+    {
+      "task_id": "textcraft_synth.val.48",
+      "difficulty": "extreme",
+      "val_index": 48
+    },
+    {
+      "task_id": "textcraft_synth.val.49",
+      "difficulty": "medium",
+      "val_index": 49
+    },
+    {
+      "task_id": "textcraft_synth.val.50",
+      "difficulty": "hard",
+      "val_index": 50
+    },
+    {
+      "task_id": "textcraft_synth.val.51",
+      "difficulty": "medium",
+      "val_index": 51
+    },
+    {
+      "task_id": "textcraft_synth.val.52",
+      "difficulty": "medium",
+      "val_index": 52
+    },
+    {
+      "task_id": "textcraft_synth.val.53",
+      "difficulty": "medium",
+      "val_index": 53
+    },
+    {
+      "task_id": "textcraft_synth.val.54",
+      "difficulty": "medium",
+      "val_index": 54
+    },
+    {
+      "task_id": "textcraft_synth.val.55",
+      "difficulty": "medium",
+      "val_index": 55
+    },
+    {
+      "task_id": "textcraft_synth.val.56",
+      "difficulty": "medium",
+      "val_index": 56
+    },
+    {
+      "task_id": "textcraft_synth.val.57",
+      "difficulty": "easy",
+      "val_index": 57
+    },
+    {
+      "task_id": "textcraft_synth.val.58",
+      "difficulty": "easy",
+      "val_index": 58
+    },
+    {
+      "task_id": "textcraft_synth.val.59",
+      "difficulty": "easy",
+      "val_index": 59
+    },
+    {
+      "task_id": "textcraft_synth.val.60",
+      "difficulty": "easy",
+      "val_index": 60
+    },
+    {
+      "task_id": "textcraft_synth.val.61",
+      "difficulty": "hard",
+      "val_index": 61
+    },
+    {
+      "task_id": "textcraft_synth.val.62",
+      "difficulty": "easy",
+      "val_index": 62
+    },
+    {
+      "task_id": "textcraft_synth.val.63",
+      "difficulty": "easy",
+      "val_index": 63
+    },
+    {
+      "task_id": "textcraft_synth.val.64",
+      "difficulty": "extreme",
+      "val_index": 64
+    },
+    {
+      "task_id": "textcraft_synth.val.65",
+      "difficulty": "easy",
+      "val_index": 65
+    },
+    {
+      "task_id": "textcraft_synth.val.66",
+      "difficulty": "hard",
+      "val_index": 66
+    },
+    {
+      "task_id": "textcraft_synth.val.67",
+      "difficulty": "medium",
+      "val_index": 67
+    },
+    {
+      "task_id": "textcraft_synth.val.68",
+      "difficulty": "medium",
+      "val_index": 68
+    },
+    {
+      "task_id": "textcraft_synth.val.69",
+      "difficulty": "medium",
+      "val_index": 69
+    },
+    {
+      "task_id": "textcraft_synth.val.70",
+      "difficulty": "medium",
+      "val_index": 70
+    },
+    {
+      "task_id": "textcraft_synth.val.71",
+      "difficulty": "medium",
+      "val_index": 71
+    },
+    {
+      "task_id": "textcraft_synth.val.72",
+      "difficulty": "extreme",
+      "val_index": 72
+    },
+    {
+      "task_id": "textcraft_synth.val.73",
+      "difficulty": "extreme",
+      "val_index": 73
+    },
+    {
+      "task_id": "textcraft_synth.val.74",
+      "difficulty": "extreme",
+      "val_index": 74
+    },
+    {
+      "task_id": "textcraft_synth.val.75",
+      "difficulty": "medium",
+      "val_index": 75
+    },
+    {
+      "task_id": "textcraft_synth.val.76",
+      "difficulty": "medium",
+      "val_index": 76
+    },
+    {
+      "task_id": "textcraft_synth.val.77",
+      "difficulty": "easy",
+      "val_index": 77
+    },
+    {
+      "task_id": "textcraft_synth.val.78",
+      "difficulty": "extreme",
+      "val_index": 78
+    },
+    {
+      "task_id": "textcraft_synth.val.79",
+      "difficulty": "medium",
+      "val_index": 79
+    },
+    {
+      "task_id": "textcraft_synth.val.80",
+      "difficulty": "medium",
+      "val_index": 80
+    },
+    {
+      "task_id": "textcraft_synth.val.81",
+      "difficulty": "extreme",
+      "val_index": 81
+    },
+    {
+      "task_id": "textcraft_synth.val.82",
+      "difficulty": "hard",
+      "val_index": 82
+    },
+    {
+      "task_id": "textcraft_synth.val.83",
+      "difficulty": "extreme",
+      "val_index": 83
+    },
+    {
+      "task_id": "textcraft_synth.val.84",
+      "difficulty": "easy",
+      "val_index": 84
+    },
+    {
+      "task_id": "textcraft_synth.val.85",
+      "difficulty": "medium",
+      "val_index": 85
+    },
+    {
+      "task_id": "textcraft_synth.val.86",
+      "difficulty": "hard",
+      "val_index": 86
+    },
+    {
+      "task_id": "textcraft_synth.val.87",
+      "difficulty": "easy",
+      "val_index": 87
+    },
+    {
+      "task_id": "textcraft_synth.val.88",
+      "difficulty": "hard",
+      "val_index": 88
+    },
+    {
+      "task_id": "textcraft_synth.val.89",
+      "difficulty": "extreme",
+      "val_index": 89
+    },
+    {
+      "task_id": "textcraft_synth.val.90",
+      "difficulty": "medium",
+      "val_index": 90
+    },
+    {
+      "task_id": "textcraft_synth.val.91",
+      "difficulty": "hard",
+      "val_index": 91
+    },
+    {
+      "task_id": "textcraft_synth.val.92",
+      "difficulty": "hard",
+      "val_index": 92
+    },
+    {
+      "task_id": "textcraft_synth.val.93",
+      "difficulty": "extreme",
+      "val_index": 93
+    },
+    {
+      "task_id": "textcraft_synth.val.94",
+      "difficulty": "hard",
+      "val_index": 94
+    },
+    {
+      "task_id": "textcraft_synth.val.95",
+      "difficulty": "hard",
+      "val_index": 95
+    },
+    {
+      "task_id": "textcraft_synth.val.96",
+      "difficulty": "easy",
+      "val_index": 96
+    },
+    {
+      "task_id": "textcraft_synth.val.97",
+      "difficulty": "easy",
+      "val_index": 97
+    },
+    {
+      "task_id": "textcraft_synth.val.98",
+      "difficulty": "medium",
+      "val_index": 98
+    },
+    {
+      "task_id": "textcraft_synth.val.99",
+      "difficulty": "medium",
+      "val_index": 99
+    },
+    {
+      "task_id": "textcraft_synth.val.100",
+      "difficulty": "extreme",
+      "val_index": 100
+    },
+    {
+      "task_id": "textcraft_synth.val.101",
+      "difficulty": "medium",
+      "val_index": 101
+    },
+    {
+      "task_id": "textcraft_synth.val.102",
+      "difficulty": "easy",
+      "val_index": 102
+    },
+    {
+      "task_id": "textcraft_synth.val.103",
+      "difficulty": "medium",
+      "val_index": 103
+    },
+    {
+      "task_id": "textcraft_synth.val.104",
+      "difficulty": "extreme",
+      "val_index": 104
+    },
+    {
+      "task_id": "textcraft_synth.val.105",
+      "difficulty": "easy",
+      "val_index": 105
+    },
+    {
+      "task_id": "textcraft_synth.val.106",
+      "difficulty": "easy",
+      "val_index": 106
+    },
+    {
+      "task_id": "textcraft_synth.val.107",
+      "difficulty": "extreme",
+      "val_index": 107
+    },
+    {
+      "task_id": "textcraft_synth.val.108",
+      "difficulty": "medium",
+      "val_index": 108
+    },
+    {
+      "task_id": "textcraft_synth.val.109",
+      "difficulty": "easy",
+      "val_index": 109
+    },
+    {
+      "task_id": "textcraft_synth.val.110",
+      "difficulty": "easy",
+      "val_index": 110
+    },
+    {
+      "task_id": "textcraft_synth.val.111",
+      "difficulty": "easy",
+      "val_index": 111
+    },
+    {
+      "task_id": "textcraft_synth.val.112",
+      "difficulty": "hard",
+      "val_index": 112
+    },
+    {
+      "task_id": "textcraft_synth.val.113",
+      "difficulty": "easy",
+      "val_index": 113
+    },
+    {
+      "task_id": "textcraft_synth.val.114",
+      "difficulty": "easy",
+      "val_index": 114
+    },
+    {
+      "task_id": "textcraft_synth.val.115",
+      "difficulty": "easy",
+      "val_index": 115
+    },
+    {
+      "task_id": "textcraft_synth.val.116",
+      "difficulty": "medium",
+      "val_index": 116
+    },
+    {
+      "task_id": "textcraft_synth.val.117",
+      "difficulty": "extreme",
+      "val_index": 117
+    },
+    {
+      "task_id": "textcraft_synth.val.118",
+      "difficulty": "medium",
+      "val_index": 118
+    },
+    {
+      "task_id": "textcraft_synth.val.119",
+      "difficulty": "extreme",
+      "val_index": 119
+    },
+    {
+      "task_id": "textcraft_synth.val.120",
+      "difficulty": "hard",
+      "val_index": 120
+    },
+    {
+      "task_id": "textcraft_synth.val.121",
+      "difficulty": "medium",
+      "val_index": 121
+    },
+    {
+      "task_id": "textcraft_synth.val.122",
+      "difficulty": "medium",
+      "val_index": 122
+    },
+    {
+      "task_id": "textcraft_synth.val.123",
+      "difficulty": "extreme",
+      "val_index": 123
+    },
+    {
+      "task_id": "textcraft_synth.val.124",
+      "difficulty": "medium",
+      "val_index": 124
+    },
+    {
+      "task_id": "textcraft_synth.val.125",
+      "difficulty": "hard",
+      "val_index": 125
+    },
+    {
+      "task_id": "textcraft_synth.val.126",
+      "difficulty": "easy",
+      "val_index": 126
+    },
+    {
+      "task_id": "textcraft_synth.val.127",
+      "difficulty": "hard",
+      "val_index": 127
+    },
+    {
+      "task_id": "textcraft_synth.val.128",
+      "difficulty": "medium",
+      "val_index": 128
+    },
+    {
+      "task_id": "textcraft_synth.val.129",
+      "difficulty": "easy",
+      "val_index": 129
+    },
+    {
+      "task_id": "textcraft_synth.val.130",
+      "difficulty": "medium",
+      "val_index": 130
+    },
+    {
+      "task_id": "textcraft_synth.val.131",
+      "difficulty": "medium",
+      "val_index": 131
+    },
+    {
+      "task_id": "textcraft_synth.val.132",
+      "difficulty": "medium",
+      "val_index": 132
+    },
+    {
+      "task_id": "textcraft_synth.val.133",
+      "difficulty": "hard",
+      "val_index": 133
+    },
+    {
+      "task_id": "textcraft_synth.val.134",
+      "difficulty": "hard",
+      "val_index": 134
+    },
+    {
+      "task_id": "textcraft_synth.val.135",
+      "difficulty": "easy",
+      "val_index": 135
+    },
+    {
+      "task_id": "textcraft_synth.val.136",
+      "difficulty": "medium",
+      "val_index": 136
+    },
+    {
+      "task_id": "textcraft_synth.val.137",
+      "difficulty": "extreme",
+      "val_index": 137
+    },
+    {
+      "task_id": "textcraft_synth.val.138",
+      "difficulty": "medium",
+      "val_index": 138
+    },
+    {
+      "task_id": "textcraft_synth.val.139",
+      "difficulty": "medium",
+      "val_index": 139
+    },
+    {
+      "task_id": "textcraft_synth.val.140",
+      "difficulty": "hard",
+      "val_index": 140
+    },
+    {
+      "task_id": "textcraft_synth.val.141",
+      "difficulty": "hard",
+      "val_index": 141
+    },
+    {
+      "task_id": "textcraft_synth.val.142",
+      "difficulty": "hard",
+      "val_index": 142
+    },
+    {
+      "task_id": "textcraft_synth.val.143",
+      "difficulty": "easy",
+      "val_index": 143
+    },
+    {
+      "task_id": "textcraft_synth.val.144",
+      "difficulty": "easy",
+      "val_index": 144
+    },
+    {
+      "task_id": "textcraft_synth.val.145",
+      "difficulty": "extreme",
+      "val_index": 145
+    },
+    {
+      "task_id": "textcraft_synth.val.146",
+      "difficulty": "extreme",
+      "val_index": 146
+    },
+    {
+      "task_id": "textcraft_synth.val.147",
+      "difficulty": "medium",
+      "val_index": 147
+    },
+    {
+      "task_id": "textcraft_synth.val.148",
+      "difficulty": "medium",
+      "val_index": 148
+    },
+    {
+      "task_id": "textcraft_synth.val.149",
+      "difficulty": "medium",
+      "val_index": 149
+    },
+    {
+      "task_id": "textcraft_synth.val.150",
+      "difficulty": "medium",
+      "val_index": 150
+    },
+    {
+      "task_id": "textcraft_synth.val.151",
+      "difficulty": "easy",
+      "val_index": 151
+    },
+    {
+      "task_id": "textcraft_synth.val.152",
+      "difficulty": "extreme",
+      "val_index": 152
+    },
+    {
+      "task_id": "textcraft_synth.val.153",
+      "difficulty": "easy",
+      "val_index": 153
+    },
+    {
+      "task_id": "textcraft_synth.val.154",
+      "difficulty": "extreme",
+      "val_index": 154
+    },
+    {
+      "task_id": "textcraft_synth.val.155",
+      "difficulty": "medium",
+      "val_index": 155
+    },
+    {
+      "task_id": "textcraft_synth.val.156",
+      "difficulty": "medium",
+      "val_index": 156
+    },
+    {
+      "task_id": "textcraft_synth.val.157",
+      "difficulty": "easy",
+      "val_index": 157
+    },
+    {
+      "task_id": "textcraft_synth.val.158",
+      "difficulty": "medium",
+      "val_index": 158
+    },
+    {
+      "task_id": "textcraft_synth.val.159",
+      "difficulty": "easy",
+      "val_index": 159
+    },
+    {
+      "task_id": "textcraft_synth.val.160",
+      "difficulty": "hard",
+      "val_index": 160
+    },
+    {
+      "task_id": "textcraft_synth.val.161",
+      "difficulty": "easy",
+      "val_index": 161
+    },
+    {
+      "task_id": "textcraft_synth.val.162",
+      "difficulty": "hard",
+      "val_index": 162
+    },
+    {
+      "task_id": "textcraft_synth.val.163",
+      "difficulty": "medium",
+      "val_index": 163
+    },
+    {
+      "task_id": "textcraft_synth.val.164",
+      "difficulty": "extreme",
+      "val_index": 164
+    },
+    {
+      "task_id": "textcraft_synth.val.165",
+      "difficulty": "hard",
+      "val_index": 165
+    },
+    {
+      "task_id": "textcraft_synth.val.166",
+      "difficulty": "hard",
+      "val_index": 166
+    },
+    {
+      "task_id": "textcraft_synth.val.167",
+      "difficulty": "extreme",
+      "val_index": 167
+    },
+    {
+      "task_id": "textcraft_synth.val.168",
+      "difficulty": "easy",
+      "val_index": 168
+    },
+    {
+      "task_id": "textcraft_synth.val.169",
+      "difficulty": "easy",
+      "val_index": 169
+    },
+    {
+      "task_id": "textcraft_synth.val.170",
+      "difficulty": "hard",
+      "val_index": 170
+    },
+    {
+      "task_id": "textcraft_synth.val.171",
+      "difficulty": "hard",
+      "val_index": 171
+    },
+    {
+      "task_id": "textcraft_synth.val.172",
+      "difficulty": "hard",
+      "val_index": 172
+    },
+    {
+      "task_id": "textcraft_synth.val.173",
+      "difficulty": "hard",
+      "val_index": 173
+    },
+    {
+      "task_id": "textcraft_synth.val.174",
+      "difficulty": "medium",
+      "val_index": 174
+    },
+    {
+      "task_id": "textcraft_synth.val.175",
+      "difficulty": "medium",
+      "val_index": 175
+    },
+    {
+      "task_id": "textcraft_synth.val.176",
+      "difficulty": "extreme",
+      "val_index": 176
+    },
+    {
+      "task_id": "textcraft_synth.val.177",
+      "difficulty": "hard",
+      "val_index": 177
+    },
+    {
+      "task_id": "textcraft_synth.val.178",
+      "difficulty": "hard",
+      "val_index": 178
+    },
+    {
+      "task_id": "textcraft_synth.val.179",
+      "difficulty": "hard",
+      "val_index": 179
+    },
+    {
+      "task_id": "textcraft_synth.val.180",
+      "difficulty": "easy",
+      "val_index": 180
+    },
+    {
+      "task_id": "textcraft_synth.val.181",
+      "difficulty": "medium",
+      "val_index": 181
+    },
+    {
+      "task_id": "textcraft_synth.val.182",
+      "difficulty": "extreme",
+      "val_index": 182
+    },
+    {
+      "task_id": "textcraft_synth.val.183",
+      "difficulty": "hard",
+      "val_index": 183
+    },
+    {
+      "task_id": "textcraft_synth.val.184",
+      "difficulty": "extreme",
+      "val_index": 184
+    },
+    {
+      "task_id": "textcraft_synth.val.185",
+      "difficulty": "extreme",
+      "val_index": 185
+    },
+    {
+      "task_id": "textcraft_synth.val.186",
+      "difficulty": "hard",
+      "val_index": 186
+    },
+    {
+      "task_id": "textcraft_synth.val.187",
+      "difficulty": "hard",
+      "val_index": 187
+    },
+    {
+      "task_id": "textcraft_synth.val.188",
+      "difficulty": "medium",
+      "val_index": 188
+    },
+    {
+      "task_id": "textcraft_synth.val.189",
+      "difficulty": "easy",
+      "val_index": 189
+    },
+    {
+      "task_id": "textcraft_synth.val.190",
+      "difficulty": "extreme",
+      "val_index": 190
+    },
+    {
+      "task_id": "textcraft_synth.val.191",
+      "difficulty": "extreme",
+      "val_index": 191
+    },
+    {
+      "task_id": "textcraft_synth.val.192",
+      "difficulty": "extreme",
+      "val_index": 192
+    },
+    {
+      "task_id": "textcraft_synth.val.193",
+      "difficulty": "extreme",
+      "val_index": 193
+    },
+    {
+      "task_id": "textcraft_synth.val.194",
+      "difficulty": "extreme",
+      "val_index": 194
+    },
+    {
+      "task_id": "textcraft_synth.val.195",
+      "difficulty": "medium",
+      "val_index": 195
+    },
+    {
+      "task_id": "textcraft_synth.val.196",
+      "difficulty": "extreme",
+      "val_index": 196
+    },
+    {
+      "task_id": "textcraft_synth.val.197",
+      "difficulty": "hard",
+      "val_index": 197
+    },
+    {
+      "task_id": "textcraft_synth.val.198",
+      "difficulty": "extreme",
+      "val_index": 198
+    },
+    {
+      "task_id": "textcraft_synth.val.199",
+      "difficulty": "medium",
+      "val_index": 199
+    },
+    {
+      "task_id": "textcraft_synth.val.200",
+      "difficulty": "easy",
+      "val_index": 200
+    },
+    {
+      "task_id": "textcraft_synth.val.201",
+      "difficulty": "medium",
+      "val_index": 201
+    },
+    {
+      "task_id": "textcraft_synth.val.202",
+      "difficulty": "medium",
+      "val_index": 202
+    },
+    {
+      "task_id": "textcraft_synth.val.203",
+      "difficulty": "medium",
+      "val_index": 203
+    },
+    {
+      "task_id": "textcraft_synth.val.204",
+      "difficulty": "medium",
+      "val_index": 204
+    },
+    {
+      "task_id": "textcraft_synth.val.205",
+      "difficulty": "medium",
+      "val_index": 205
+    },
+    {
+      "task_id": "textcraft_synth.val.206",
+      "difficulty": "easy",
+      "val_index": 206
+    },
+    {
+      "task_id": "textcraft_synth.val.207",
+      "difficulty": "medium",
+      "val_index": 207
+    },
+    {
+      "task_id": "textcraft_synth.val.208",
+      "difficulty": "easy",
+      "val_index": 208
+    },
+    {
+      "task_id": "textcraft_synth.val.209",
+      "difficulty": "easy",
+      "val_index": 209
+    },
+    {
+      "task_id": "textcraft_synth.val.210",
+      "difficulty": "medium",
+      "val_index": 210
+    },
+    {
+      "task_id": "textcraft_synth.val.211",
+      "difficulty": "hard",
+      "val_index": 211
+    },
+    {
+      "task_id": "textcraft_synth.val.212",
+      "difficulty": "medium",
+      "val_index": 212
+    },
+    {
+      "task_id": "textcraft_synth.val.213",
+      "difficulty": "hard",
+      "val_index": 213
+    },
+    {
+      "task_id": "textcraft_synth.val.214",
+      "difficulty": "hard",
+      "val_index": 214
+    },
+    {
+      "task_id": "textcraft_synth.val.215",
+      "difficulty": "hard",
+      "val_index": 215
+    },
+    {
+      "task_id": "textcraft_synth.val.216",
+      "difficulty": "medium",
+      "val_index": 216
+    },
+    {
+      "task_id": "textcraft_synth.val.217",
+      "difficulty": "hard",
+      "val_index": 217
+    },
+    {
+      "task_id": "textcraft_synth.val.218",
+      "difficulty": "extreme",
+      "val_index": 218
+    },
+    {
+      "task_id": "textcraft_synth.val.219",
+      "difficulty": "extreme",
+      "val_index": 219
+    },
+    {
+      "task_id": "textcraft_synth.val.220",
+      "difficulty": "easy",
+      "val_index": 220
+    },
+    {
+      "task_id": "textcraft_synth.val.221",
+      "difficulty": "easy",
+      "val_index": 221
+    },
+    {
+      "task_id": "textcraft_synth.val.222",
+      "difficulty": "hard",
+      "val_index": 222
+    },
+    {
+      "task_id": "textcraft_synth.val.223",
+      "difficulty": "hard",
+      "val_index": 223
+    },
+    {
+      "task_id": "textcraft_synth.val.224",
+      "difficulty": "easy",
+      "val_index": 224
+    },
+    {
+      "task_id": "textcraft_synth.val.225",
+      "difficulty": "extreme",
+      "val_index": 225
+    },
+    {
+      "task_id": "textcraft_synth.val.226",
+      "difficulty": "medium",
+      "val_index": 226
+    },
+    {
+      "task_id": "textcraft_synth.val.227",
+      "difficulty": "extreme",
+      "val_index": 227
+    },
+    {
+      "task_id": "textcraft_synth.val.228",
+      "difficulty": "medium",
+      "val_index": 228
+    },
+    {
+      "task_id": "textcraft_synth.val.229",
+      "difficulty": "hard",
+      "val_index": 229
+    },
+    {
+      "task_id": "textcraft_synth.val.230",
+      "difficulty": "hard",
+      "val_index": 230
+    },
+    {
+      "task_id": "textcraft_synth.val.231",
+      "difficulty": "medium",
+      "val_index": 231
+    },
+    {
+      "task_id": "textcraft_synth.val.232",
+      "difficulty": "extreme",
+      "val_index": 232
+    },
+    {
+      "task_id": "textcraft_synth.val.233",
+      "difficulty": "medium",
+      "val_index": 233
+    },
+    {
+      "task_id": "textcraft_synth.val.234",
+      "difficulty": "easy",
+      "val_index": 234
+    },
+    {
+      "task_id": "textcraft_synth.val.235",
+      "difficulty": "easy",
+      "val_index": 235
+    },
+    {
+      "task_id": "textcraft_synth.val.236",
+      "difficulty": "medium",
+      "val_index": 236
+    },
+    {
+      "task_id": "textcraft_synth.val.237",
+      "difficulty": "medium",
+      "val_index": 237
+    },
+    {
+      "task_id": "textcraft_synth.val.238",
+      "difficulty": "medium",
+      "val_index": 238
+    },
+    {
+      "task_id": "textcraft_synth.val.239",
+      "difficulty": "hard",
+      "val_index": 239
+    },
+    {
+      "task_id": "textcraft_synth.val.240",
+      "difficulty": "extreme",
+      "val_index": 240
+    },
+    {
+      "task_id": "textcraft_synth.val.241",
+      "difficulty": "easy",
+      "val_index": 241
+    },
+    {
+      "task_id": "textcraft_synth.val.242",
+      "difficulty": "extreme",
+      "val_index": 242
+    },
+    {
+      "task_id": "textcraft_synth.val.243",
+      "difficulty": "medium",
+      "val_index": 243
+    },
+    {
+      "task_id": "textcraft_synth.val.244",
+      "difficulty": "medium",
+      "val_index": 244
+    },
+    {
+      "task_id": "textcraft_synth.val.245",
+      "difficulty": "extreme",
+      "val_index": 245
+    },
+    {
+      "task_id": "textcraft_synth.val.246",
+      "difficulty": "easy",
+      "val_index": 246
+    },
+    {
+      "task_id": "textcraft_synth.val.247",
+      "difficulty": "easy",
+      "val_index": 247
+    },
+    {
+      "task_id": "textcraft_synth.val.248",
+      "difficulty": "extreme",
+      "val_index": 248
+    },
+    {
+      "task_id": "textcraft_synth.val.249",
+      "difficulty": "hard",
+      "val_index": 249
+    },
+    {
+      "task_id": "textcraft_synth.val.250",
+      "difficulty": "extreme",
+      "val_index": 250
+    },
+    {
+      "task_id": "textcraft_synth.val.251",
+      "difficulty": "medium",
+      "val_index": 251
+    },
+    {
+      "task_id": "textcraft_synth.val.252",
+      "difficulty": "medium",
+      "val_index": 252
+    },
+    {
+      "task_id": "textcraft_synth.val.253",
+      "difficulty": "medium",
+      "val_index": 253
+    },
+    {
+      "task_id": "textcraft_synth.val.254",
+      "difficulty": "medium",
+      "val_index": 254
+    },
+    {
+      "task_id": "textcraft_synth.val.255",
+      "difficulty": "medium",
+      "val_index": 255
+    },
+    {
+      "task_id": "textcraft_synth.val.256",
+      "difficulty": "medium",
+      "val_index": 256
+    },
+    {
+      "task_id": "textcraft_synth.val.257",
+      "difficulty": "easy",
+      "val_index": 257
+    },
+    {
+      "task_id": "textcraft_synth.val.258",
+      "difficulty": "medium",
+      "val_index": 258
+    },
+    {
+      "task_id": "textcraft_synth.val.259",
+      "difficulty": "easy",
+      "val_index": 259
+    },
+    {
+      "task_id": "textcraft_synth.val.260",
+      "difficulty": "hard",
+      "val_index": 260
+    },
+    {
+      "task_id": "textcraft_synth.val.261",
+      "difficulty": "medium",
+      "val_index": 261
+    },
+    {
+      "task_id": "textcraft_synth.val.262",
+      "difficulty": "easy",
+      "val_index": 262
+    },
+    {
+      "task_id": "textcraft_synth.val.263",
+      "difficulty": "easy",
+      "val_index": 263
+    },
+    {
+      "task_id": "textcraft_synth.val.264",
+      "difficulty": "easy",
+      "val_index": 264
+    },
+    {
+      "task_id": "textcraft_synth.val.265",
+      "difficulty": "easy",
+      "val_index": 265
+    },
+    {
+      "task_id": "textcraft_synth.val.266",
+      "difficulty": "easy",
+      "val_index": 266
+    },
+    {
+      "task_id": "textcraft_synth.val.267",
+      "difficulty": "easy",
+      "val_index": 267
+    },
+    {
+      "task_id": "textcraft_synth.val.268",
+      "difficulty": "easy",
+      "val_index": 268
+    },
+    {
+      "task_id": "textcraft_synth.val.269",
+      "difficulty": "medium",
+      "val_index": 269
+    },
+    {
+      "task_id": "textcraft_synth.val.270",
+      "difficulty": "extreme",
+      "val_index": 270
+    },
+    {
+      "task_id": "textcraft_synth.val.271",
+      "difficulty": "extreme",
+      "val_index": 271
+    },
+    {
+      "task_id": "textcraft_synth.val.272",
+      "difficulty": "easy",
+      "val_index": 272
+    },
+    {
+      "task_id": "textcraft_synth.val.273",
+      "difficulty": "medium",
+      "val_index": 273
+    },
+    {
+      "task_id": "textcraft_synth.val.274",
+      "difficulty": "hard",
+      "val_index": 274
+    },
+    {
+      "task_id": "textcraft_synth.val.275",
+      "difficulty": "medium",
+      "val_index": 275
+    },
+    {
+      "task_id": "textcraft_synth.val.276",
+      "difficulty": "hard",
+      "val_index": 276
+    },
+    {
+      "task_id": "textcraft_synth.val.277",
+      "difficulty": "hard",
+      "val_index": 277
+    },
+    {
+      "task_id": "textcraft_synth.val.278",
+      "difficulty": "medium",
+      "val_index": 278
+    },
+    {
+      "task_id": "textcraft_synth.val.279",
+      "difficulty": "medium",
+      "val_index": 279
+    },
+    {
+      "task_id": "textcraft_synth.val.280",
+      "difficulty": "medium",
+      "val_index": 280
+    },
+    {
+      "task_id": "textcraft_synth.val.281",
+      "difficulty": "hard",
+      "val_index": 281
+    },
+    {
+      "task_id": "textcraft_synth.val.282",
+      "difficulty": "easy",
+      "val_index": 282
+    },
+    {
+      "task_id": "textcraft_synth.val.283",
+      "difficulty": "extreme",
+      "val_index": 283
+    },
+    {
+      "task_id": "textcraft_synth.val.284",
+      "difficulty": "easy",
+      "val_index": 284
+    },
+    {
+      "task_id": "textcraft_synth.val.285",
+      "difficulty": "medium",
+      "val_index": 285
+    },
+    {
+      "task_id": "textcraft_synth.val.286",
+      "difficulty": "hard",
+      "val_index": 286
+    },
+    {
+      "task_id": "textcraft_synth.val.287",
+      "difficulty": "extreme",
+      "val_index": 287
+    },
+    {
+      "task_id": "textcraft_synth.val.288",
+      "difficulty": "hard",
+      "val_index": 288
+    },
+    {
+      "task_id": "textcraft_synth.val.289",
+      "difficulty": "extreme",
+      "val_index": 289
+    },
+    {
+      "task_id": "textcraft_synth.val.290",
+      "difficulty": "medium",
+      "val_index": 290
+    },
+    {
+      "task_id": "textcraft_synth.val.291",
+      "difficulty": "easy",
+      "val_index": 291
+    },
+    {
+      "task_id": "textcraft_synth.val.292",
+      "difficulty": "extreme",
+      "val_index": 292
+    },
+    {
+      "task_id": "textcraft_synth.val.293",
+      "difficulty": "medium",
+      "val_index": 293
+    },
+    {
+      "task_id": "textcraft_synth.val.294",
+      "difficulty": "medium",
+      "val_index": 294
+    },
+    {
+      "task_id": "textcraft_synth.val.295",
+      "difficulty": "hard",
+      "val_index": 295
+    },
+    {
+      "task_id": "textcraft_synth.val.296",
+      "difficulty": "medium",
+      "val_index": 296
+    },
+    {
+      "task_id": "textcraft_synth.val.297",
+      "difficulty": "medium",
+      "val_index": 297
+    },
+    {
+      "task_id": "textcraft_synth.val.298",
+      "difficulty": "hard",
+      "val_index": 298
+    },
+    {
+      "task_id": "textcraft_synth.val.299",
+      "difficulty": "easy",
+      "val_index": 299
+    },
+    {
+      "task_id": "textcraft_synth.val.300",
+      "difficulty": "extreme",
+      "val_index": 300
+    },
+    {
+      "task_id": "textcraft_synth.val.301",
+      "difficulty": "hard",
+      "val_index": 301
+    },
+    {
+      "task_id": "textcraft_synth.val.302",
+      "difficulty": "medium",
+      "val_index": 302
+    },
+    {
+      "task_id": "textcraft_synth.val.303",
+      "difficulty": "easy",
+      "val_index": 303
+    },
+    {
+      "task_id": "textcraft_synth.val.304",
+      "difficulty": "easy",
+      "val_index": 304
+    },
+    {
+      "task_id": "textcraft_synth.val.305",
+      "difficulty": "extreme",
+      "val_index": 305
+    },
+    {
+      "task_id": "textcraft_synth.val.306",
+      "difficulty": "medium",
+      "val_index": 306
+    },
+    {
+      "task_id": "textcraft_synth.val.307",
+      "difficulty": "extreme",
+      "val_index": 307
+    },
+    {
+      "task_id": "textcraft_synth.val.308",
+      "difficulty": "easy",
+      "val_index": 308
+    },
+    {
+      "task_id": "textcraft_synth.val.309",
+      "difficulty": "extreme",
+      "val_index": 309
+    },
+    {
+      "task_id": "textcraft_synth.val.310",
+      "difficulty": "medium",
+      "val_index": 310
+    },
+    {
+      "task_id": "textcraft_synth.val.311",
+      "difficulty": "hard",
+      "val_index": 311
+    },
+    {
+      "task_id": "textcraft_synth.val.312",
+      "difficulty": "hard",
+      "val_index": 312
+    },
+    {
+      "task_id": "textcraft_synth.val.313",
+      "difficulty": "easy",
+      "val_index": 313
+    },
+    {
+      "task_id": "textcraft_synth.val.314",
+      "difficulty": "hard",
+      "val_index": 314
+    },
+    {
+      "task_id": "textcraft_synth.val.315",
+      "difficulty": "medium",
+      "val_index": 315
+    },
+    {
+      "task_id": "textcraft_synth.val.316",
+      "difficulty": "medium",
+      "val_index": 316
+    },
+    {
+      "task_id": "textcraft_synth.val.317",
+      "difficulty": "hard",
+      "val_index": 317
+    },
+    {
+      "task_id": "textcraft_synth.val.318",
+      "difficulty": "hard",
+      "val_index": 318
+    },
+    {
+      "task_id": "textcraft_synth.val.319",
+      "difficulty": "medium",
+      "val_index": 319
+    },
+    {
+      "task_id": "textcraft_synth.val.320",
+      "difficulty": "extreme",
+      "val_index": 320
+    },
+    {
+      "task_id": "textcraft_synth.val.321",
+      "difficulty": "medium",
+      "val_index": 321
+    },
+    {
+      "task_id": "textcraft_synth.val.322",
+      "difficulty": "medium",
+      "val_index": 322
+    },
+    {
+      "task_id": "textcraft_synth.val.323",
+      "difficulty": "extreme",
+      "val_index": 323
+    },
+    {
+      "task_id": "textcraft_synth.val.324",
+      "difficulty": "extreme",
+      "val_index": 324
+    },
+    {
+      "task_id": "textcraft_synth.val.325",
+      "difficulty": "easy",
+      "val_index": 325
+    },
+    {
+      "task_id": "textcraft_synth.val.326",
+      "difficulty": "medium",
+      "val_index": 326
+    },
+    {
+      "task_id": "textcraft_synth.val.327",
+      "difficulty": "easy",
+      "val_index": 327
+    },
+    {
+      "task_id": "textcraft_synth.val.328",
+      "difficulty": "hard",
+      "val_index": 328
+    },
+    {
+      "task_id": "textcraft_synth.val.329",
+      "difficulty": "easy",
+      "val_index": 329
+    },
+    {
+      "task_id": "textcraft_synth.val.330",
+      "difficulty": "easy",
+      "val_index": 330
+    },
+    {
+      "task_id": "textcraft_synth.val.331",
+      "difficulty": "easy",
+      "val_index": 331
+    },
+    {
+      "task_id": "textcraft_synth.val.332",
+      "difficulty": "easy",
+      "val_index": 332
+    },
+    {
+      "task_id": "textcraft_synth.val.333",
+      "difficulty": "medium",
+      "val_index": 333
+    },
+    {
+      "task_id": "textcraft_synth.val.334",
+      "difficulty": "extreme",
+      "val_index": 334
+    },
+    {
+      "task_id": "textcraft_synth.val.335",
+      "difficulty": "hard",
+      "val_index": 335
+    },
+    {
+      "task_id": "textcraft_synth.val.336",
+      "difficulty": "extreme",
+      "val_index": 336
+    },
+    {
+      "task_id": "textcraft_synth.val.337",
+      "difficulty": "easy",
+      "val_index": 337
+    },
+    {
+      "task_id": "textcraft_synth.val.338",
+      "difficulty": "hard",
+      "val_index": 338
+    },
+    {
+      "task_id": "textcraft_synth.val.339",
+      "difficulty": "extreme",
+      "val_index": 339
+    },
+    {
+      "task_id": "textcraft_synth.val.340",
+      "difficulty": "easy",
+      "val_index": 340
+    },
+    {
+      "task_id": "textcraft_synth.val.341",
+      "difficulty": "medium",
+      "val_index": 341
+    },
+    {
+      "task_id": "textcraft_synth.val.342",
+      "difficulty": "extreme",
+      "val_index": 342
+    },
+    {
+      "task_id": "textcraft_synth.val.343",
+      "difficulty": "medium",
+      "val_index": 343
+    },
+    {
+      "task_id": "textcraft_synth.val.344",
+      "difficulty": "hard",
+      "val_index": 344
+    },
+    {
+      "task_id": "textcraft_synth.val.345",
+      "difficulty": "medium",
+      "val_index": 345
+    },
+    {
+      "task_id": "textcraft_synth.val.346",
+      "difficulty": "hard",
+      "val_index": 346
+    },
+    {
+      "task_id": "textcraft_synth.val.347",
+      "difficulty": "extreme",
+      "val_index": 347
+    },
+    {
+      "task_id": "textcraft_synth.val.348",
+      "difficulty": "easy",
+      "val_index": 348
+    },
+    {
+      "task_id": "textcraft_synth.val.349",
+      "difficulty": "hard",
+      "val_index": 349
+    },
+    {
+      "task_id": "textcraft_synth.val.350",
+      "difficulty": "hard",
+      "val_index": 350
+    },
+    {
+      "task_id": "textcraft_synth.val.351",
+      "difficulty": "medium",
+      "val_index": 351
+    },
+    {
+      "task_id": "textcraft_synth.val.352",
+      "difficulty": "medium",
+      "val_index": 352
+    },
+    {
+      "task_id": "textcraft_synth.val.353",
+      "difficulty": "extreme",
+      "val_index": 353
+    },
+    {
+      "task_id": "textcraft_synth.val.354",
+      "difficulty": "easy",
+      "val_index": 354
+    },
+    {
+      "task_id": "textcraft_synth.val.355",
+      "difficulty": "hard",
+      "val_index": 355
+    },
+    {
+      "task_id": "textcraft_synth.val.356",
+      "difficulty": "extreme",
+      "val_index": 356
+    },
+    {
+      "task_id": "textcraft_synth.val.357",
+      "difficulty": "medium",
+      "val_index": 357
+    },
+    {
+      "task_id": "textcraft_synth.val.358",
+      "difficulty": "medium",
+      "val_index": 358
+    },
+    {
+      "task_id": "textcraft_synth.val.359",
+      "difficulty": "extreme",
+      "val_index": 359
+    },
+    {
+      "task_id": "textcraft_synth.val.360",
+      "difficulty": "hard",
+      "val_index": 360
+    },
+    {
+      "task_id": "textcraft_synth.val.361",
+      "difficulty": "easy",
+      "val_index": 361
+    },
+    {
+      "task_id": "textcraft_synth.val.362",
+      "difficulty": "easy",
+      "val_index": 362
+    },
+    {
+      "task_id": "textcraft_synth.val.363",
+      "difficulty": "extreme",
+      "val_index": 363
+    },
+    {
+      "task_id": "textcraft_synth.val.364",
+      "difficulty": "easy",
+      "val_index": 364
+    },
+    {
+      "task_id": "textcraft_synth.val.365",
+      "difficulty": "extreme",
+      "val_index": 365
+    },
+    {
+      "task_id": "textcraft_synth.val.366",
+      "difficulty": "easy",
+      "val_index": 366
+    },
+    {
+      "task_id": "textcraft_synth.val.367",
+      "difficulty": "medium",
+      "val_index": 367
+    },
+    {
+      "task_id": "textcraft_synth.val.368",
+      "difficulty": "medium",
+      "val_index": 368
+    },
+    {
+      "task_id": "textcraft_synth.val.369",
+      "difficulty": "hard",
+      "val_index": 369
+    },
+    {
+      "task_id": "textcraft_synth.val.370",
+      "difficulty": "extreme",
+      "val_index": 370
+    },
+    {
+      "task_id": "textcraft_synth.val.371",
+      "difficulty": "extreme",
+      "val_index": 371
+    },
+    {
+      "task_id": "textcraft_synth.val.372",
+      "difficulty": "medium",
+      "val_index": 372
+    },
+    {
+      "task_id": "textcraft_synth.val.373",
+      "difficulty": "extreme",
+      "val_index": 373
+    },
+    {
+      "task_id": "textcraft_synth.val.374",
+      "difficulty": "medium",
+      "val_index": 374
+    },
+    {
+      "task_id": "textcraft_synth.val.375",
+      "difficulty": "easy",
+      "val_index": 375
+    },
+    {
+      "task_id": "textcraft_synth.val.376",
+      "difficulty": "medium",
+      "val_index": 376
+    },
+    {
+      "task_id": "textcraft_synth.val.377",
+      "difficulty": "extreme",
+      "val_index": 377
+    },
+    {
+      "task_id": "textcraft_synth.val.378",
+      "difficulty": "extreme",
+      "val_index": 378
+    },
+    {
+      "task_id": "textcraft_synth.val.379",
+      "difficulty": "hard",
+      "val_index": 379
+    },
+    {
+      "task_id": "textcraft_synth.val.380",
+      "difficulty": "hard",
+      "val_index": 380
+    },
+    {
+      "task_id": "textcraft_synth.val.381",
+      "difficulty": "easy",
+      "val_index": 381
+    },
+    {
+      "task_id": "textcraft_synth.val.382",
+      "difficulty": "medium",
+      "val_index": 382
+    },
+    {
+      "task_id": "textcraft_synth.val.383",
+      "difficulty": "hard",
+      "val_index": 383
+    },
+    {
+      "task_id": "textcraft_synth.val.384",
+      "difficulty": "easy",
+      "val_index": 384
+    },
+    {
+      "task_id": "textcraft_synth.val.385",
+      "difficulty": "hard",
+      "val_index": 385
+    },
+    {
+      "task_id": "textcraft_synth.val.386",
+      "difficulty": "medium",
+      "val_index": 386
+    },
+    {
+      "task_id": "textcraft_synth.val.387",
+      "difficulty": "easy",
+      "val_index": 387
+    },
+    {
+      "task_id": "textcraft_synth.val.388",
+      "difficulty": "extreme",
+      "val_index": 388
+    },
+    {
+      "task_id": "textcraft_synth.val.389",
+      "difficulty": "medium",
+      "val_index": 389
+    },
+    {
+      "task_id": "textcraft_synth.val.390",
+      "difficulty": "medium",
+      "val_index": 390
+    },
+    {
+      "task_id": "textcraft_synth.val.391",
+      "difficulty": "hard",
+      "val_index": 391
+    },
+    {
+      "task_id": "textcraft_synth.val.392",
+      "difficulty": "medium",
+      "val_index": 392
+    },
+    {
+      "task_id": "textcraft_synth.val.393",
+      "difficulty": "easy",
+      "val_index": 393
+    },
+    {
+      "task_id": "textcraft_synth.val.394",
+      "difficulty": "medium",
+      "val_index": 394
+    },
+    {
+      "task_id": "textcraft_synth.val.395",
+      "difficulty": "medium",
+      "val_index": 395
+    },
+    {
+      "task_id": "textcraft_synth.val.396",
+      "difficulty": "medium",
+      "val_index": 396
+    },
+    {
+      "task_id": "textcraft_synth.val.397",
+      "difficulty": "medium",
+      "val_index": 397
+    },
+    {
+      "task_id": "textcraft_synth.val.398",
+      "difficulty": "extreme",
+      "val_index": 398
+    },
+    {
+      "task_id": "textcraft_synth.val.399",
+      "difficulty": "extreme",
+      "val_index": 399
+    },
+    {
+      "task_id": "textcraft_synth.val.400",
+      "difficulty": "medium",
+      "val_index": 400
+    },
+    {
+      "task_id": "textcraft_synth.val.401",
+      "difficulty": "medium",
+      "val_index": 401
+    },
+    {
+      "task_id": "textcraft_synth.val.402",
+      "difficulty": "medium",
+      "val_index": 402
+    },
+    {
+      "task_id": "textcraft_synth.val.403",
+      "difficulty": "hard",
+      "val_index": 403
+    },
+    {
+      "task_id": "textcraft_synth.val.404",
+      "difficulty": "medium",
+      "val_index": 404
+    },
+    {
+      "task_id": "textcraft_synth.val.405",
+      "difficulty": "medium",
+      "val_index": 405
+    },
+    {
+      "task_id": "textcraft_synth.val.406",
+      "difficulty": "medium",
+      "val_index": 406
+    },
+    {
+      "task_id": "textcraft_synth.val.407",
+      "difficulty": "medium",
+      "val_index": 407
+    },
+    {
+      "task_id": "textcraft_synth.val.408",
+      "difficulty": "hard",
+      "val_index": 408
+    },
+    {
+      "task_id": "textcraft_synth.val.409",
+      "difficulty": "extreme",
+      "val_index": 409
+    },
+    {
+      "task_id": "textcraft_synth.val.410",
+      "difficulty": "hard",
+      "val_index": 410
+    },
+    {
+      "task_id": "textcraft_synth.val.411",
+      "difficulty": "hard",
+      "val_index": 411
+    },
+    {
+      "task_id": "textcraft_synth.val.412",
+      "difficulty": "medium",
+      "val_index": 412
+    },
+    {
+      "task_id": "textcraft_synth.val.413",
+      "difficulty": "hard",
+      "val_index": 413
+    },
+    {
+      "task_id": "textcraft_synth.val.414",
+      "difficulty": "medium",
+      "val_index": 414
+    },
+    {
+      "task_id": "textcraft_synth.val.415",
+      "difficulty": "extreme",
+      "val_index": 415
+    },
+    {
+      "task_id": "textcraft_synth.val.416",
+      "difficulty": "extreme",
+      "val_index": 416
+    },
+    {
+      "task_id": "textcraft_synth.val.417",
+      "difficulty": "medium",
+      "val_index": 417
+    },
+    {
+      "task_id": "textcraft_synth.val.418",
+      "difficulty": "easy",
+      "val_index": 418
+    },
+    {
+      "task_id": "textcraft_synth.val.419",
+      "difficulty": "easy",
+      "val_index": 419
+    },
+    {
+      "task_id": "textcraft_synth.val.420",
+      "difficulty": "hard",
+      "val_index": 420
+    },
+    {
+      "task_id": "textcraft_synth.val.421",
+      "difficulty": "easy",
+      "val_index": 421
+    },
+    {
+      "task_id": "textcraft_synth.val.422",
+      "difficulty": "extreme",
+      "val_index": 422
+    },
+    {
+      "task_id": "textcraft_synth.val.423",
+      "difficulty": "hard",
+      "val_index": 423
+    },
+    {
+      "task_id": "textcraft_synth.val.424",
+      "difficulty": "extreme",
+      "val_index": 424
+    },
+    {
+      "task_id": "textcraft_synth.val.425",
+      "difficulty": "hard",
+      "val_index": 425
+    },
+    {
+      "task_id": "textcraft_synth.val.426",
+      "difficulty": "extreme",
+      "val_index": 426
+    },
+    {
+      "task_id": "textcraft_synth.val.427",
+      "difficulty": "easy",
+      "val_index": 427
+    },
+    {
+      "task_id": "textcraft_synth.val.428",
+      "difficulty": "easy",
+      "val_index": 428
+    },
+    {
+      "task_id": "textcraft_synth.val.429",
+      "difficulty": "easy",
+      "val_index": 429
+    },
+    {
+      "task_id": "textcraft_synth.val.430",
+      "difficulty": "hard",
+      "val_index": 430
+    },
+    {
+      "task_id": "textcraft_synth.val.431",
+      "difficulty": "extreme",
+      "val_index": 431
+    },
+    {
+      "task_id": "textcraft_synth.val.432",
+      "difficulty": "medium",
+      "val_index": 432
+    },
+    {
+      "task_id": "textcraft_synth.val.433",
+      "difficulty": "easy",
+      "val_index": 433
+    },
+    {
+      "task_id": "textcraft_synth.val.434",
+      "difficulty": "hard",
+      "val_index": 434
+    },
+    {
+      "task_id": "textcraft_synth.val.435",
+      "difficulty": "medium",
+      "val_index": 435
+    },
+    {
+      "task_id": "textcraft_synth.val.436",
+      "difficulty": "extreme",
+      "val_index": 436
+    },
+    {
+      "task_id": "textcraft_synth.val.437",
+      "difficulty": "extreme",
+      "val_index": 437
+    },
+    {
+      "task_id": "textcraft_synth.val.438",
+      "difficulty": "hard",
+      "val_index": 438
+    },
+    {
+      "task_id": "textcraft_synth.val.439",
+      "difficulty": "extreme",
+      "val_index": 439
+    },
+    {
+      "task_id": "textcraft_synth.val.440",
+      "difficulty": "medium",
+      "val_index": 440
+    },
+    {
+      "task_id": "textcraft_synth.val.441",
+      "difficulty": "easy",
+      "val_index": 441
+    },
+    {
+      "task_id": "textcraft_synth.val.442",
+      "difficulty": "hard",
+      "val_index": 442
+    },
+    {
+      "task_id": "textcraft_synth.val.443",
+      "difficulty": "medium",
+      "val_index": 443
+    },
+    {
+      "task_id": "textcraft_synth.val.444",
+      "difficulty": "hard",
+      "val_index": 444
+    },
+    {
+      "task_id": "textcraft_synth.val.445",
+      "difficulty": "hard",
+      "val_index": 445
+    },
+    {
+      "task_id": "textcraft_synth.val.446",
+      "difficulty": "medium",
+      "val_index": 446
+    },
+    {
+      "task_id": "textcraft_synth.val.447",
+      "difficulty": "easy",
+      "val_index": 447
+    },
+    {
+      "task_id": "textcraft_synth.val.448",
+      "difficulty": "extreme",
+      "val_index": 448
+    },
+    {
+      "task_id": "textcraft_synth.val.449",
+      "difficulty": "extreme",
+      "val_index": 449
+    },
+    {
+      "task_id": "textcraft_synth.val.450",
+      "difficulty": "easy",
+      "val_index": 450
+    },
+    {
+      "task_id": "textcraft_synth.val.451",
+      "difficulty": "medium",
+      "val_index": 451
+    },
+    {
+      "task_id": "textcraft_synth.val.452",
+      "difficulty": "extreme",
+      "val_index": 452
+    },
+    {
+      "task_id": "textcraft_synth.val.453",
+      "difficulty": "medium",
+      "val_index": 453
+    },
+    {
+      "task_id": "textcraft_synth.val.454",
+      "difficulty": "hard",
+      "val_index": 454
+    },
+    {
+      "task_id": "textcraft_synth.val.455",
+      "difficulty": "medium",
+      "val_index": 455
+    },
+    {
+      "task_id": "textcraft_synth.val.456",
+      "difficulty": "hard",
+      "val_index": 456
+    },
+    {
+      "task_id": "textcraft_synth.val.457",
+      "difficulty": "medium",
+      "val_index": 457
+    },
+    {
+      "task_id": "textcraft_synth.val.458",
+      "difficulty": "easy",
+      "val_index": 458
+    },
+    {
+      "task_id": "textcraft_synth.val.459",
+      "difficulty": "easy",
+      "val_index": 459
+    },
+    {
+      "task_id": "textcraft_synth.val.460",
+      "difficulty": "medium",
+      "val_index": 460
+    },
+    {
+      "task_id": "textcraft_synth.val.461",
+      "difficulty": "extreme",
+      "val_index": 461
+    },
+    {
+      "task_id": "textcraft_synth.val.462",
+      "difficulty": "easy",
+      "val_index": 462
+    },
+    {
+      "task_id": "textcraft_synth.val.463",
+      "difficulty": "hard",
+      "val_index": 463
+    },
+    {
+      "task_id": "textcraft_synth.val.464",
+      "difficulty": "medium",
+      "val_index": 464
+    },
+    {
+      "task_id": "textcraft_synth.val.465",
+      "difficulty": "medium",
+      "val_index": 465
+    },
+    {
+      "task_id": "textcraft_synth.val.466",
+      "difficulty": "medium",
+      "val_index": 466
+    },
+    {
+      "task_id": "textcraft_synth.val.467",
+      "difficulty": "medium",
+      "val_index": 467
+    },
+    {
+      "task_id": "textcraft_synth.val.468",
+      "difficulty": "hard",
+      "val_index": 468
+    },
+    {
+      "task_id": "textcraft_synth.val.469",
+      "difficulty": "medium",
+      "val_index": 469
+    },
+    {
+      "task_id": "textcraft_synth.val.470",
+      "difficulty": "easy",
+      "val_index": 470
+    },
+    {
+      "task_id": "textcraft_synth.val.471",
+      "difficulty": "easy",
+      "val_index": 471
+    },
+    {
+      "task_id": "textcraft_synth.val.472",
+      "difficulty": "medium",
+      "val_index": 472
+    },
+    {
+      "task_id": "textcraft_synth.val.473",
+      "difficulty": "extreme",
+      "val_index": 473
+    },
+    {
+      "task_id": "textcraft_synth.val.474",
+      "difficulty": "extreme",
+      "val_index": 474
+    },
+    {
+      "task_id": "textcraft_synth.val.475",
+      "difficulty": "medium",
+      "val_index": 475
+    },
+    {
+      "task_id": "textcraft_synth.val.476",
+      "difficulty": "hard",
+      "val_index": 476
+    },
+    {
+      "task_id": "textcraft_synth.val.477",
+      "difficulty": "medium",
+      "val_index": 477
+    },
+    {
+      "task_id": "textcraft_synth.val.478",
+      "difficulty": "hard",
+      "val_index": 478
+    },
+    {
+      "task_id": "textcraft_synth.val.479",
+      "difficulty": "medium",
+      "val_index": 479
+    },
+    {
+      "task_id": "textcraft_synth.val.480",
+      "difficulty": "extreme",
+      "val_index": 480
+    },
+    {
+      "task_id": "textcraft_synth.val.481",
+      "difficulty": "medium",
+      "val_index": 481
+    },
+    {
+      "task_id": "textcraft_synth.val.482",
+      "difficulty": "easy",
+      "val_index": 482
+    },
+    {
+      "task_id": "textcraft_synth.val.483",
+      "difficulty": "medium",
+      "val_index": 483
+    },
+    {
+      "task_id": "textcraft_synth.val.484",
+      "difficulty": "easy",
+      "val_index": 484
+    },
+    {
+      "task_id": "textcraft_synth.val.485",
+      "difficulty": "hard",
+      "val_index": 485
+    },
+    {
+      "task_id": "textcraft_synth.val.486",
+      "difficulty": "medium",
+      "val_index": 486
+    },
+    {
+      "task_id": "textcraft_synth.val.487",
+      "difficulty": "medium",
+      "val_index": 487
+    },
+    {
+      "task_id": "textcraft_synth.val.488",
+      "difficulty": "extreme",
+      "val_index": 488
+    },
+    {
+      "task_id": "textcraft_synth.val.489",
+      "difficulty": "medium",
+      "val_index": 489
+    },
+    {
+      "task_id": "textcraft_synth.val.490",
+      "difficulty": "medium",
+      "val_index": 490
+    },
+    {
+      "task_id": "textcraft_synth.val.491",
+      "difficulty": "easy",
+      "val_index": 491
+    },
+    {
+      "task_id": "textcraft_synth.val.492",
+      "difficulty": "hard",
+      "val_index": 492
+    },
+    {
+      "task_id": "textcraft_synth.val.493",
+      "difficulty": "medium",
+      "val_index": 493
+    },
+    {
+      "task_id": "textcraft_synth.val.494",
+      "difficulty": "medium",
+      "val_index": 494
+    },
+    {
+      "task_id": "textcraft_synth.val.495",
+      "difficulty": "hard",
+      "val_index": 495
+    },
+    {
+      "task_id": "textcraft_synth.val.496",
+      "difficulty": "medium",
+      "val_index": 496
+    },
+    {
+      "task_id": "textcraft_synth.val.497",
+      "difficulty": "medium",
+      "val_index": 497
+    },
+    {
+      "task_id": "textcraft_synth.val.498",
+      "difficulty": "easy",
+      "val_index": 498
+    },
+    {
+      "task_id": "textcraft_synth.val.499",
+      "difficulty": "easy",
+      "val_index": 499
+    },
+    {
+      "task_id": "textcraft_synth.val.500",
+      "difficulty": "extreme",
+      "val_index": 500
+    },
+    {
+      "task_id": "textcraft_synth.val.501",
+      "difficulty": "easy",
+      "val_index": 501
+    },
+    {
+      "task_id": "textcraft_synth.val.502",
+      "difficulty": "easy",
+      "val_index": 502
+    },
+    {
+      "task_id": "textcraft_synth.val.503",
+      "difficulty": "extreme",
+      "val_index": 503
+    },
+    {
+      "task_id": "textcraft_synth.val.504",
+      "difficulty": "extreme",
+      "val_index": 504
+    },
+    {
+      "task_id": "textcraft_synth.val.505",
+      "difficulty": "medium",
+      "val_index": 505
+    },
+    {
+      "task_id": "textcraft_synth.val.506",
+      "difficulty": "hard",
+      "val_index": 506
+    },
+    {
+      "task_id": "textcraft_synth.val.507",
+      "difficulty": "medium",
+      "val_index": 507
+    },
+    {
+      "task_id": "textcraft_synth.val.508",
+      "difficulty": "easy",
+      "val_index": 508
+    },
+    {
+      "task_id": "textcraft_synth.val.509",
+      "difficulty": "medium",
+      "val_index": 509
+    },
+    {
+      "task_id": "textcraft_synth.val.510",
+      "difficulty": "extreme",
+      "val_index": 510
+    },
+    {
+      "task_id": "textcraft_synth.val.511",
+      "difficulty": "extreme",
+      "val_index": 511
+    },
+    {
+      "task_id": "textcraft_synth.val.512",
+      "difficulty": "easy",
+      "val_index": 512
+    },
+    {
+      "task_id": "textcraft_synth.val.513",
+      "difficulty": "medium",
+      "val_index": 513
+    },
+    {
+      "task_id": "textcraft_synth.val.514",
+      "difficulty": "medium",
+      "val_index": 514
+    },
+    {
+      "task_id": "textcraft_synth.val.515",
+      "difficulty": "medium",
+      "val_index": 515
+    },
+    {
+      "task_id": "textcraft_synth.val.516",
+      "difficulty": "medium",
+      "val_index": 516
+    },
+    {
+      "task_id": "textcraft_synth.val.517",
+      "difficulty": "extreme",
+      "val_index": 517
+    },
+    {
+      "task_id": "textcraft_synth.val.518",
+      "difficulty": "easy",
+      "val_index": 518
+    },
+    {
+      "task_id": "textcraft_synth.val.519",
+      "difficulty": "extreme",
+      "val_index": 519
+    },
+    {
+      "task_id": "textcraft_synth.val.520",
+      "difficulty": "medium",
+      "val_index": 520
+    },
+    {
+      "task_id": "textcraft_synth.val.521",
+      "difficulty": "medium",
+      "val_index": 521
+    },
+    {
+      "task_id": "textcraft_synth.val.522",
+      "difficulty": "medium",
+      "val_index": 522
+    },
+    {
+      "task_id": "textcraft_synth.val.523",
+      "difficulty": "medium",
+      "val_index": 523
+    },
+    {
+      "task_id": "textcraft_synth.val.524",
+      "difficulty": "easy",
+      "val_index": 524
+    },
+    {
+      "task_id": "textcraft_synth.val.525",
+      "difficulty": "hard",
+      "val_index": 525
+    },
+    {
+      "task_id": "textcraft_synth.val.526",
+      "difficulty": "hard",
+      "val_index": 526
+    },
+    {
+      "task_id": "textcraft_synth.val.527",
+      "difficulty": "hard",
+      "val_index": 527
+    },
+    {
+      "task_id": "textcraft_synth.val.528",
+      "difficulty": "easy",
+      "val_index": 528
+    },
+    {
+      "task_id": "textcraft_synth.val.529",
+      "difficulty": "hard",
+      "val_index": 529
+    },
+    {
+      "task_id": "textcraft_synth.val.530",
+      "difficulty": "extreme",
+      "val_index": 530
+    },
+    {
+      "task_id": "textcraft_synth.val.531",
+      "difficulty": "medium",
+      "val_index": 531
+    },
+    {
+      "task_id": "textcraft_synth.val.532",
+      "difficulty": "hard",
+      "val_index": 532
+    },
+    {
+      "task_id": "textcraft_synth.val.533",
+      "difficulty": "easy",
+      "val_index": 533
+    },
+    {
+      "task_id": "textcraft_synth.val.534",
+      "difficulty": "extreme",
+      "val_index": 534
+    },
+    {
+      "task_id": "textcraft_synth.val.535",
+      "difficulty": "medium",
+      "val_index": 535
+    },
+    {
+      "task_id": "textcraft_synth.val.536",
+      "difficulty": "extreme",
+      "val_index": 536
+    },
+    {
+      "task_id": "textcraft_synth.val.537",
+      "difficulty": "hard",
+      "val_index": 537
+    },
+    {
+      "task_id": "textcraft_synth.val.538",
+      "difficulty": "extreme",
+      "val_index": 538
+    },
+    {
+      "task_id": "textcraft_synth.val.539",
+      "difficulty": "easy",
+      "val_index": 539
+    },
+    {
+      "task_id": "textcraft_synth.val.540",
+      "difficulty": "hard",
+      "val_index": 540
+    },
+    {
+      "task_id": "textcraft_synth.val.541",
+      "difficulty": "extreme",
+      "val_index": 541
+    },
+    {
+      "task_id": "textcraft_synth.val.542",
+      "difficulty": "easy",
+      "val_index": 542
+    },
+    {
+      "task_id": "textcraft_synth.val.543",
+      "difficulty": "medium",
+      "val_index": 543
+    },
+    {
+      "task_id": "textcraft_synth.val.544",
+      "difficulty": "medium",
+      "val_index": 544
+    },
+    {
+      "task_id": "textcraft_synth.val.545",
+      "difficulty": "hard",
+      "val_index": 545
+    },
+    {
+      "task_id": "textcraft_synth.val.546",
+      "difficulty": "extreme",
+      "val_index": 546
+    },
+    {
+      "task_id": "textcraft_synth.val.547",
+      "difficulty": "hard",
+      "val_index": 547
+    },
+    {
+      "task_id": "textcraft_synth.val.548",
+      "difficulty": "easy",
+      "val_index": 548
+    },
+    {
+      "task_id": "textcraft_synth.val.549",
+      "difficulty": "medium",
+      "val_index": 549
+    },
+    {
+      "task_id": "textcraft_synth.val.550",
+      "difficulty": "easy",
+      "val_index": 550
+    },
+    {
+      "task_id": "textcraft_synth.val.551",
+      "difficulty": "medium",
+      "val_index": 551
+    },
+    {
+      "task_id": "textcraft_synth.val.552",
+      "difficulty": "hard",
+      "val_index": 552
+    },
+    {
+      "task_id": "textcraft_synth.val.553",
+      "difficulty": "medium",
+      "val_index": 553
+    },
+    {
+      "task_id": "textcraft_synth.val.554",
+      "difficulty": "easy",
+      "val_index": 554
+    },
+    {
+      "task_id": "textcraft_synth.val.555",
+      "difficulty": "medium",
+      "val_index": 555
+    },
+    {
+      "task_id": "textcraft_synth.val.556",
+      "difficulty": "easy",
+      "val_index": 556
+    },
+    {
+      "task_id": "textcraft_synth.val.557",
+      "difficulty": "medium",
+      "val_index": 557
+    },
+    {
+      "task_id": "textcraft_synth.val.558",
+      "difficulty": "extreme",
+      "val_index": 558
+    },
+    {
+      "task_id": "textcraft_synth.val.559",
+      "difficulty": "medium",
+      "val_index": 559
+    },
+    {
+      "task_id": "textcraft_synth.val.560",
+      "difficulty": "medium",
+      "val_index": 560
+    },
+    {
+      "task_id": "textcraft_synth.val.561",
+      "difficulty": "easy",
+      "val_index": 561
+    },
+    {
+      "task_id": "textcraft_synth.val.562",
+      "difficulty": "hard",
+      "val_index": 562
+    },
+    {
+      "task_id": "textcraft_synth.val.563",
+      "difficulty": "medium",
+      "val_index": 563
+    },
+    {
+      "task_id": "textcraft_synth.val.564",
+      "difficulty": "extreme",
+      "val_index": 564
+    },
+    {
+      "task_id": "textcraft_synth.val.565",
+      "difficulty": "extreme",
+      "val_index": 565
+    },
+    {
+      "task_id": "textcraft_synth.val.566",
+      "difficulty": "extreme",
+      "val_index": 566
+    },
+    {
+      "task_id": "textcraft_synth.val.567",
+      "difficulty": "medium",
+      "val_index": 567
+    },
+    {
+      "task_id": "textcraft_synth.val.568",
+      "difficulty": "extreme",
+      "val_index": 568
+    },
+    {
+      "task_id": "textcraft_synth.val.569",
+      "difficulty": "medium",
+      "val_index": 569
+    },
+    {
+      "task_id": "textcraft_synth.val.570",
+      "difficulty": "medium",
+      "val_index": 570
+    },
+    {
+      "task_id": "textcraft_synth.val.571",
+      "difficulty": "easy",
+      "val_index": 571
+    },
+    {
+      "task_id": "textcraft_synth.val.572",
+      "difficulty": "hard",
+      "val_index": 572
+    },
+    {
+      "task_id": "textcraft_synth.val.573",
+      "difficulty": "medium",
+      "val_index": 573
+    },
+    {
+      "task_id": "textcraft_synth.val.574",
+      "difficulty": "extreme",
+      "val_index": 574
+    },
+    {
+      "task_id": "textcraft_synth.val.575",
+      "difficulty": "medium",
+      "val_index": 575
+    },
+    {
+      "task_id": "textcraft_synth.val.576",
+      "difficulty": "medium",
+      "val_index": 576
+    },
+    {
+      "task_id": "textcraft_synth.val.577",
+      "difficulty": "extreme",
+      "val_index": 577
+    },
+    {
+      "task_id": "textcraft_synth.val.578",
+      "difficulty": "medium",
+      "val_index": 578
+    },
+    {
+      "task_id": "textcraft_synth.val.579",
+      "difficulty": "easy",
+      "val_index": 579
+    },
+    {
+      "task_id": "textcraft_synth.val.580",
+      "difficulty": "hard",
+      "val_index": 580
+    },
+    {
+      "task_id": "textcraft_synth.val.581",
+      "difficulty": "easy",
+      "val_index": 581
+    },
+    {
+      "task_id": "textcraft_synth.val.582",
+      "difficulty": "extreme",
+      "val_index": 582
+    },
+    {
+      "task_id": "textcraft_synth.val.583",
+      "difficulty": "easy",
+      "val_index": 583
+    },
+    {
+      "task_id": "textcraft_synth.val.584",
+      "difficulty": "extreme",
+      "val_index": 584
+    },
+    {
+      "task_id": "textcraft_synth.val.585",
+      "difficulty": "medium",
+      "val_index": 585
+    },
+    {
+      "task_id": "textcraft_synth.val.586",
+      "difficulty": "extreme",
+      "val_index": 586
+    },
+    {
+      "task_id": "textcraft_synth.val.587",
+      "difficulty": "medium",
+      "val_index": 587
+    },
+    {
+      "task_id": "textcraft_synth.val.588",
+      "difficulty": "hard",
+      "val_index": 588
+    },
+    {
+      "task_id": "textcraft_synth.val.589",
+      "difficulty": "easy",
+      "val_index": 589
+    },
+    {
+      "task_id": "textcraft_synth.val.590",
+      "difficulty": "hard",
+      "val_index": 590
+    },
+    {
+      "task_id": "textcraft_synth.val.591",
+      "difficulty": "hard",
+      "val_index": 591
+    },
+    {
+      "task_id": "textcraft_synth.val.592",
+      "difficulty": "hard",
+      "val_index": 592
+    },
+    {
+      "task_id": "textcraft_synth.val.593",
+      "difficulty": "medium",
+      "val_index": 593
+    },
+    {
+      "task_id": "textcraft_synth.val.594",
+      "difficulty": "hard",
+      "val_index": 594
+    },
+    {
+      "task_id": "textcraft_synth.val.595",
+      "difficulty": "easy",
+      "val_index": 595
+    },
+    {
+      "task_id": "textcraft_synth.val.596",
+      "difficulty": "extreme",
+      "val_index": 596
+    },
+    {
+      "task_id": "textcraft_synth.val.597",
+      "difficulty": "hard",
+      "val_index": 597
+    },
+    {
+      "task_id": "textcraft_synth.val.598",
+      "difficulty": "extreme",
+      "val_index": 598
+    },
+    {
+      "task_id": "textcraft_synth.val.599",
+      "difficulty": "medium",
+      "val_index": 599
+    },
+    {
+      "task_id": "textcraft_synth.val.600",
+      "difficulty": "extreme",
+      "val_index": 600
+    },
+    {
+      "task_id": "textcraft_synth.val.601",
+      "difficulty": "medium",
+      "val_index": 601
+    },
+    {
+      "task_id": "textcraft_synth.val.602",
+      "difficulty": "easy",
+      "val_index": 602
+    },
+    {
+      "task_id": "textcraft_synth.val.603",
+      "difficulty": "hard",
+      "val_index": 603
+    },
+    {
+      "task_id": "textcraft_synth.val.604",
+      "difficulty": "medium",
+      "val_index": 604
+    },
+    {
+      "task_id": "textcraft_synth.val.605",
+      "difficulty": "hard",
+      "val_index": 605
+    },
+    {
+      "task_id": "textcraft_synth.val.606",
+      "difficulty": "hard",
+      "val_index": 606
+    },
+    {
+      "task_id": "textcraft_synth.val.607",
+      "difficulty": "hard",
+      "val_index": 607
+    },
+    {
+      "task_id": "textcraft_synth.val.608",
+      "difficulty": "medium",
+      "val_index": 608
+    },
+    {
+      "task_id": "textcraft_synth.val.609",
+      "difficulty": "extreme",
+      "val_index": 609
+    },
+    {
+      "task_id": "textcraft_synth.val.610",
+      "difficulty": "medium",
+      "val_index": 610
+    },
+    {
+      "task_id": "textcraft_synth.val.611",
+      "difficulty": "medium",
+      "val_index": 611
+    },
+    {
+      "task_id": "textcraft_synth.val.612",
+      "difficulty": "easy",
+      "val_index": 612
+    },
+    {
+      "task_id": "textcraft_synth.val.613",
+      "difficulty": "easy",
+      "val_index": 613
+    },
+    {
+      "task_id": "textcraft_synth.val.614",
+      "difficulty": "hard",
+      "val_index": 614
+    },
+    {
+      "task_id": "textcraft_synth.val.615",
+      "difficulty": "hard",
+      "val_index": 615
+    },
+    {
+      "task_id": "textcraft_synth.val.616",
+      "difficulty": "medium",
+      "val_index": 616
+    },
+    {
+      "task_id": "textcraft_synth.val.617",
+      "difficulty": "easy",
+      "val_index": 617
+    },
+    {
+      "task_id": "textcraft_synth.val.618",
+      "difficulty": "extreme",
+      "val_index": 618
+    },
+    {
+      "task_id": "textcraft_synth.val.619",
+      "difficulty": "hard",
+      "val_index": 619
+    },
+    {
+      "task_id": "textcraft_synth.val.620",
+      "difficulty": "medium",
+      "val_index": 620
+    },
+    {
+      "task_id": "textcraft_synth.val.621",
+      "difficulty": "extreme",
+      "val_index": 621
+    },
+    {
+      "task_id": "textcraft_synth.val.622",
+      "difficulty": "extreme",
+      "val_index": 622
+    },
+    {
+      "task_id": "textcraft_synth.val.623",
+      "difficulty": "hard",
+      "val_index": 623
+    },
+    {
+      "task_id": "textcraft_synth.val.624",
+      "difficulty": "hard",
+      "val_index": 624
+    },
+    {
+      "task_id": "textcraft_synth.val.625",
+      "difficulty": "easy",
+      "val_index": 625
+    },
+    {
+      "task_id": "textcraft_synth.val.626",
+      "difficulty": "extreme",
+      "val_index": 626
+    },
+    {
+      "task_id": "textcraft_synth.val.627",
+      "difficulty": "medium",
+      "val_index": 627
+    },
+    {
+      "task_id": "textcraft_synth.val.628",
+      "difficulty": "medium",
+      "val_index": 628
+    },
+    {
+      "task_id": "textcraft_synth.val.629",
+      "difficulty": "easy",
+      "val_index": 629
+    },
+    {
+      "task_id": "textcraft_synth.val.630",
+      "difficulty": "medium",
+      "val_index": 630
+    },
+    {
+      "task_id": "textcraft_synth.val.631",
+      "difficulty": "extreme",
+      "val_index": 631
+    }
+  ]
+}

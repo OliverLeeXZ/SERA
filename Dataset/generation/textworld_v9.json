@@ -1,0 +1,349 @@
+{
+  "version": "textworld_multidish_v9_mixed_train_1500",
+  "enabled": true,
+  "default_task_family": "multi_dish_fork_join",
+  "task_view": "structured",
+  "task_view_by_difficulty": {
+    "easy": "structured",
+    "medium": "structured",
+    "hard": "structured",
+    "extreme": "coarse"
+  },
+  "source_db": "cooking_world.json",
+  "require_disjoint_ingredients": true,
+  "seed_stride": 1000003,
+  "runtime_ranges": {
+    "easy": {
+      "shared_environment_max_steps": {
+        "min": 115,
+        "max": 125
+      },
+      "tool_cooldown_steps": {
+        "choices": [
+          0
+        ]
+      }
+    },
+    "medium": {
+      "shared_environment_max_steps": {
+        "min": 95,
+        "max": 100
+      },
+      "tool_cooldown_steps": {
+        "choices": [
+          0,
+          1
+        ]
+      }
+    },
+    "hard": {
+      "shared_environment_max_steps": {
+        "min": 75,
+        "max": 90
+      },
+      "tool_cooldown_steps": {
+        "choices": [
+          1
+        ]
+      }
+    },
+    "extreme": {
+      "shared_environment_max_steps": {
+        "min": 65,
+        "max": 80
+      },
+      "tool_cooldown_steps": {
+        "choices": [
+          1
+        ]
+      }
+    }
+  },
+  "task_families": {
+    "multi_dish_fork_join": {
+      "pattern": "fork_join",
+      "description": "independent dishes with a shared finalization stage"
+    },
+    "critical_path": {
+      "pattern": "critical_path",
+      "description": "independent branches with one deliberately longer branch"
+    },
+    "load_balanced": {
+      "pattern": "load_balanced",
+      "description": "heterogeneous branch workload"
+    },
+    "resource_constrained": {
+      "pattern": "resource_constrained",
+      "shared_resources": [
+        "knife",
+        "stove",
+        "kitchen"
+      ],
+      "description": "parallel branches under shared capacity and tools"
+    },
+    "dependency_gate": {
+      "pattern": "dependency_gate",
+      "gate_count": 1,
+      "gate_type": "door",
+      "include_doors": true,
+      "description": "some branches require an access gate before execution"
+    },
+    "conflict": {
+      "pattern": "conflict",
+      "shared_resources": [
+        "knife",
+        "stove"
+      ],
+      "resource_capacity": {
+        "knife": 1,
+        "stove": 1
+      },
+      "description": "branches compete for unique shared tools"
+    },
+    "hierarchical": {
+      "pattern": "hierarchical",
+      "hierarchy_depth": 2,
+      "description": "dish-level branches contain ingredient-level subbranches"
+    }
+  },
+  "difficulty_ranges": {
+    "easy": {
+      "dish_count": {
+        "min": 2,
+        "max": 2
+      },
+      "ingredients_per_dish": {
+        "min": 3,
+        "max": 3
+      },
+      "num_locations": {
+        "min": 5,
+        "max": 6
+      },
+      "num_distractor_items": {
+        "min": 3,
+        "max": 5
+      },
+      "include_doors": {
+        "choices": [
+          false
+        ]
+      },
+      "limit_inventory_size": {
+        "choices": [
+          false
+        ]
+      },
+      "inventory_capacity": {
+        "min": 2,
+        "max": 2
+      },
+      "min_prepared_ingredients_per_dish": {
+        "min": 1,
+        "max": 1
+      },
+      "max_prepared_ingredients_per_dish": {
+        "min": 1,
+        "max": 2
+      },
+      "preparation_complexity": {
+        "choices": [
+          "low",
+          "medium"
+        ]
+      }
+    },
+    "medium": {
+      "dish_count": {
+        "min": 2,
+        "max": 4
+      },
+      "ingredients_per_dish": {
+        "min": 3,
+        "max": 4
+      },
+      "num_locations": {
+        "min": 7,
+        "max": 10
+      },
+      "num_distractor_items": {
+        "min": 6,
+        "max": 12
+      },
+      "include_doors": {
+        "choices": [
+          true
+        ]
+      },
+      "limit_inventory_size": {
+        "choices": [
+          true
+        ]
+      },
+      "inventory_capacity": {
+        "min": 1,
+        "max": 2
+      },
+      "min_prepared_ingredients_per_dish": {
+        "min": 2,
+        "max": 3
+      },
+      "max_prepared_ingredients_per_dish": {
+        "min": 3,
+        "max": 3
+      },
+      "preparation_complexity": {
+        "choices": [
+          "medium",
+          "high"
+        ]
+      }
+    },
+    "hard": {
+      "dish_count": {
+        "min": 4,
+        "max": 5
+      },
+      "ingredients_per_dish": {
+        "min": 4,
+        "max": 4
+      },
+      "num_locations": {
+        "min": 10,
+        "max": 11
+      },
+      "num_distractor_items": {
+        "min": 12,
+        "max": 18
+      },
+      "include_doors": {
+        "choices": [
+          true
+        ]
+      },
+      "limit_inventory_size": {
+        "choices": [
+          true
+        ]
+      },
+      "inventory_capacity": {
+        "min": 1,
+        "max": 1
+      },
+      "min_prepared_ingredients_per_dish": {
+        "min": 3,
+        "max": 3
+      },
+      "max_prepared_ingredients_per_dish": {
+        "min": 3,
+        "max": 3
+      },
+      "preparation_complexity": {
+        "choices": [
+          "high"
+        ]
+      }
+    },
+    "extreme": {
+      "dish_count": {
+        "min": 5,
+        "max": 5
+      },
+      "ingredients_per_dish": {
+        "min": 4,
+        "max": 4
+      },
+      "num_locations": {
+        "min": 10,
+        "max": 11
+      },
+      "num_distractor_items": {
+        "min": 16,
+        "max": 20
+      },
+      "include_doors": {
+        "choices": [
+          true
+        ]
+      },
+      "limit_inventory_size": {
+        "choices": [
+          true
+        ]
+      },
+      "inventory_capacity": {
+        "min": 1,
+        "max": 1
+      },
+      "min_prepared_ingredients_per_dish": {
+        "min": 3,
+        "max": 3
+      },
+      "max_prepared_ingredients_per_dish": {
+        "min": 3,
+        "max": 3
+      },
+      "preparation_complexity": {
+        "choices": [
+          "high"
+        ]
+      }
+    }
+  },
+  "test_matrix": {
+    "source_fold": "test",
+    "seed_start": 820000,
+    "count_per_family": 50,
+    "difficulty_seed_stride": 1000,
+    "family_seed_stride": 100,
+    "difficulties": [
+      "easy",
+      "medium",
+      "hard",
+      "extreme"
+    ],
+    "families": [
+      "multi_dish_fork_join",
+      "critical_path",
+      "load_balanced",
+      "resource_constrained",
+      "dependency_gate",
+      "conflict",
+      "hierarchical"
+    ]
+  },
+  "train_dev_matrix": {
+    "family_seed_stride": 200,
+    "families": [
+      "multi_dish_fork_join",
+      "critical_path",
+      "load_balanced",
+      "resource_constrained",
+      "dependency_gate",
+      "conflict",
+      "hierarchical"
+    ],
+    "difficulty_seed_stride": 100000,
+    "splits": {
+      "train": {
+        "source_fold": "train",
+        "seed_start": 850000,
+        "difficulty_counts": {
+          "medium": 900,
+          "extreme": 450,
+          "hard": 150
+        }
+      },
+      "dev": {
+        "source_fold": "dev",
+        "seed_start": 860000,
+        "difficulty_counts": {
+          "easy": 50,
+          "medium": 50,
+          "hard": 50,
+          "extreme": 50
+        }
+      }
+    }
+  }
+}
