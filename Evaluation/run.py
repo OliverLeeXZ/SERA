@@ -14,6 +14,7 @@ import signal
 from evaluation_common import (ROOT, aggregate_results, atomic_json, create_plan, default_protocol,
                                evaluate_shard, exclusive_lock, read_json, use_backend)
 from local_serving import local_services, models_ready
+from Runtime.clients.external_model import preflight_external_models
 
 
 def parser():
@@ -82,8 +83,7 @@ def execute(args):
         judge = ExternalJudgeConfig(endpoint=os.getenv("KIMI_JUDGE_ENDPOINT", os.getenv("KIMI_BASE_URL", "")),
                                     model=os.getenv("KIMI_JUDGE_MODEL", os.getenv("KIMI_MODEL", "kimi-k2.6"))) if args.selection_mode == "oracle" else None
         values = protocol(values, selector, judge)
-        if judge and not args.dry_run and not os.getenv(judge.api_key_env):
-            raise ValueError(f"External judge requires {judge.api_key_env}")
+        preflight_external_models([judge.as_external_model()] if judge else [], dry_run=args.dry_run)
     tag = "bestofn" if args.best_of_n else ("single" if args.single_agent else "n1")
     output_base = ROOT.parent / "TestTimeScale" if args.best_of_n else ROOT
     output = (args.output_root or output_base / "outputs" / args.backend.lower() / f"{tag}-{datetime.now():%Y%m%d-%H%M%S-%f}").resolve()

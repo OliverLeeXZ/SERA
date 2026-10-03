@@ -80,6 +80,17 @@ defaults are temperature 1, 1,024 completion tokens, 1,800s timeout and two
 retries; its requests disable thinking. Another compatible external model can
 be selected through the same variables. Policy mode needs none of them.
 
+Formal launches and shard workers check endpoint/model/key and send a small
+binary-judge completion before rollouts. Startup fails on invalid configuration,
+authentication errors, unavailable models, or malformed responses. Startup
+probes use a 20-second timeout and at most one retry for transient transport
+failures. `--dry-run` performs no network requests and does not verify credentials
+or service availability. Policy selection never probes an external API.
+If an external judge fails during selection after its configured retries, the
+task is recorded as an error with a `judge_error` artifact; no candidate is
+committed and no policy-judge fallback is used. Valid negative judgments remain
+ordinary unsuccessful candidate judgments, not infrastructure errors.
+
 ```bash
 # No GPU imports, servers, network calls or writes.
 bash Scripts/TestTimeScaling/run_policy.sh /path/to/hf-checkpoint --dry-run

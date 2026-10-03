@@ -462,6 +462,7 @@ def _error_record(task: TaskSpec, manifest_sha256: str, error: Exception) -> dic
         "schema_version": 1,
         "status": "completed",
         "error": f"{type(error).__name__}: {error}",
+        "judge_error": getattr(error, "judge_error", None),
         "manifest_sha256": manifest_sha256,
         "task_id": task.task_id,
         "game": task.game,
@@ -487,6 +488,13 @@ async def evaluate_manifest(
     resume: bool = True,
     resume_retain_errors: bool = False,
 ) -> dict[str, Any]:
+    # Direct/sharded entrypoints must check each worker before writing rollout artifacts.
+    if selector.selection_mode == "oracle":
+        if judge_config is None:
+            raise ValueError("oracle selection requires explicit external judge configuration")
+        from Runtime.clients.external_model import preflight_external_models
+        judge_config.validate()
+        await asyncio.to_thread(preflight_external_models, [judge_config.as_external_model()])
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
     rollouts = output / "rollouts"

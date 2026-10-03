@@ -103,6 +103,18 @@ runtime and are not written to resolved configs. The TextWorld
 `sera_without_decomposition_reward_and_rubric_training.sh` recipe requires
 no external judge.
 
+Required external backends are validated and probed before training is
+submitted, and again in each trainer process before GPU initialization. The
+probe sends a small completion using the configured model and verifies the
+binary-judge, rubric, or score schema as appropriate. Missing endpoint/model/key,
+authentication failures, unavailable models, and malformed completions stop
+startup; transient transport failures have at most one retry with a 20-second
+timeout per request. Pure-policy methods send no external requests.
+`--dry-run` checks configuration structure without API calls or credentials and
+explicitly reports that availability has not been verified. External rubric
+failures may drop a trajectory or skip a rollout, but cannot use
+`fallback_binary` rewards.
+
 ## Launch, inspect, override, resume
 
 Run from the repository root:

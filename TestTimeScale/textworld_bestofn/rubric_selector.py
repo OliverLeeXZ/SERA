@@ -13,6 +13,13 @@ from Runtime.rubric.scoring import parse_policy_score, parse_rubric
 from .kimi_oracle import KimiTextWorldJudge
 
 
+class ExternalJudgeSelectionError(RuntimeError):
+    """A judge error is not a negative judgment or a valid first-branch fallback."""
+    def __init__(self, group):
+        super().__init__("External judge failed during candidate selection; see judge_error artifact")
+        self.judge_error = group
+
+
 @dataclass(frozen=True)
 class RubricSelectionConfig:
     branching_factor: int = 2
@@ -242,6 +249,8 @@ async def select_delegated_trajectory(
                 "oracle_error": None,
                 "selected": False,
             }
+        except ExternalJudgeSelectionError:
+            raise
         except Exception as exc:
             return {
                 "branch_index": branch_index,
@@ -273,9 +282,13 @@ async def select_delegated_trajectory(
 
     # Candidate recursion is complete before this gather returns, so scoring
     # and selection are bottom-up at every node.
-    branches = list(
-        await asyncio.gather(*(one(index) for index in range(config.branching_factor)))
-    )
+    branches = list(await asyncio.gather(
+        *(one(index) for index in range(config.branching_factor)), return_exceptions=True))
+    # Finish sibling work before propagating a nested judge failure. Do not leave
+    # orphan candidate tasks running while the caller retries the root task.
+    for branch in branches:
+        if isinstance(branch, BaseException):
+            raise branch
 
     if rubric is not None:
         async def score(branch: dict[str, Any]) -> None:
@@ -371,7 +384,6 @@ async def select_delegated_trajectory(
 
     selected = branches[selected_index]
     selected["selected"] = True
-    commit_coordinator(coordinator, selected["coordinator"])
 
     serialized_branches = []
     for branch in branches:
@@ -393,4 +405,12 @@ async def select_delegated_trajectory(
         "forked_environment_count": fork_budget.used if fork_budget is not None else None,
         "max_forked_environments": fork_budget.maximum if fork_budget is not None else None,
     }
+    if config.selection_mode == "oracle" and (rubric_error or any(
+            branch.get("oracle_error") or branch.get("oracle_success") is None for branch in branches)):
+        group["selected_branch_index"] = None
+        group["fallback_reason"] = "external judge error; no branch committed"
+        for branch in group["branches"]:
+            branch["selected"] = False
+        raise ExternalJudgeSelectionError(group)
+    commit_coordinator(coordinator, selected["coordinator"])
     return selected["trajectory"], group

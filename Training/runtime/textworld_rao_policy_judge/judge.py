@@ -404,7 +404,8 @@ class _KimiClient:
                     completion_id=response.id,
                 )
             except Exception as exc:
-                return _JudgeRecord(error=f"{type(exc).__name__}: {exc}")
+                from Runtime.clients.external_model import external_request_error
+                return _JudgeRecord(error=external_request_error(exc))
 
         return await asyncio.gather(
             *(generate(messages) for messages in messages_batch)

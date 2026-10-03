@@ -7,6 +7,7 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from typing import Any
+from Runtime.clients.external_model import ExternalModelSpec, external_request_error
 
 
 @dataclass(frozen=True)
@@ -20,9 +21,18 @@ class ExternalJudgeConfig:
     max_completion_tokens: int = 1024
     temperature: float = 1.0
 
+    def as_external_model(self):
+        return ExternalModelSpec(
+            role="TextWorld Best-of-N judge", endpoint=self.endpoint, model=self.model,
+            endpoint_setting="KIMI_JUDGE_ENDPOINT (or KIMI_BASE_URL)",
+            model_setting="KIMI_JUDGE_MODEL (or KIMI_MODEL)",
+            api_key_env=self.api_key_env, temperature=self.temperature,
+            max_tokens=self.max_completion_tokens,
+            extra_body={"reasoning_effort": "none", "chat_template_kwargs": {"enable_thinking": False},
+                        "extra_body": {"max_prompt_tokens": self.max_prompt_tokens}})
+
     def validate(self):
-        if not self.endpoint.startswith(("http://", "https://")) or not self.model.strip():
-            raise ValueError("External judge requires an HTTP(S) endpoint and model")
+        self.as_external_model().validate(dry_run=True)
         if self.retries < 0 or self.temperature < 0 or min(self.timeout, self.max_prompt_tokens, self.max_completion_tokens) <= 0:
             raise ValueError("Invalid judge timeout, retries, temperature or token budgets")
 
@@ -204,5 +214,5 @@ class KimiTextWorldJudge:
             success=None,
             reason='',
             raw_output='',
-            error=f'{type(last_error).__name__}: {last_error}' if last_error else 'KIMI request failed',
+            error=external_request_error(last_error),
         )

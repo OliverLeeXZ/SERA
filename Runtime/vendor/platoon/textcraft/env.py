@@ -862,6 +862,7 @@ class TextCraftRecursiveEnv(TextCraftEnv):
         # Use self._recipes_dir and self._initial_inventory which were set by parent class
         # (parent applies defaults: recipes_dir from __file__, inventory from task.misc)
         # Replace executor with Recursive version, sharing the same inventory reference
+        previous_executor = self._code_executor
         self._code_executor = TextCraftRecursiveCodeExecutor(
             task,
             recipes_dir=self._recipes_dir,
@@ -870,6 +871,7 @@ class TextCraftRecursiveEnv(TextCraftEnv):
             _share_inventory=True,  # Always share since we're using parent's inventory dict
             use_synth=self._use_synth,
         )
+        previous_executor.close_shell()
 
     def _get_subagent_stats_and_reset(self) -> tuple[int, float]:
         """Get per-step unique launched children and summed child success score."""
@@ -1117,6 +1119,7 @@ class TextCraftDepthAwareEnv(TextCraftRecursiveEnv):
         self._subagent_max_steps = subagent_max_steps
 
         # Replace the executor with the depth-aware version
+        previous_executor = self._code_executor
         self._code_executor = TextCraftDepthAwareCodeExecutor(
             task,
             subagent_max_steps=subagent_max_steps,
@@ -1126,6 +1129,7 @@ class TextCraftDepthAwareEnv(TextCraftRecursiveEnv):
             _share_inventory=True,
             use_synth=self._use_synth,
         )
+        previous_executor.close_shell()
 
     async def fork(self, task: Task) -> "TextCraftDepthAwareEnv":
         targets = self._parse_craft_targets_from_goal(task.goal)

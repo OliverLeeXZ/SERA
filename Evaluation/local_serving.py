@@ -44,9 +44,77 @@ def models_ready(base_url, model, api_key="EMPTY"):
         return False
 
 
-def start_proxy(backends):
+def prepare_vllm_request(payload, tokenizer):
+    """Honor CodeAct's exact prompt budget with the training truncation policy.
+
+    vLLM does not implement the SGLang/AReaL chat-template budget extension.
+    Encode the same template locally, preserve the system/task prefix, discard
+    oldest complete interaction pairs, then use vLLM's token-ID completion API.
+    The caller converts the completion response back to the chat API schema.
+    """
+    template_kwargs = dict(payload.get("chat_template_kwargs") or {})
+    budget = template_kwargs.pop("platoon_max_prompt_tokens", None)
+    if budget is None:
+        return payload, False
+    if tokenizer is None:
+        raise ValueError("A local tokenizer is required to honor the CodeAct prompt budget")
+    budget = int(budget)
+    if budget <= 0:
+        raise ValueError("CodeAct prompt budget must be positive")
+    if payload.get("stream") or payload.get("tools"):
+        raise ValueError("Budgeted CodeAct requests must be non-streaming and tool-free")
+    messages = list(payload["messages"])
+
+    def encode(turns, *, add_generation_prompt=True):
+        return tokenizer.apply_chat_template(turns, tokenize=True,
+                                             add_generation_prompt=add_generation_prompt,
+                                             **template_kwargs)
+
+    tokens = encode(messages)
+    prefix, recent = messages[:2], messages[2:]
+    while len(tokens) > budget and len(recent) >= 2:
+        recent = recent[2:]
+        tokens = encode(prefix + recent)
+    if len(tokens) > budget:
+        prefix_tokens = encode(prefix, add_generation_prompt=False)[:budget]
+        tail_budget = budget - len(prefix_tokens)
+        tokens = prefix_tokens + (tokens[-tail_budget:] if tail_budget > 0 else [])
+    completion = dict(payload)
+    for key in ("messages", "chat_template_kwargs", "max_completion_tokens"):
+        completion.pop(key, None)
+    completion["prompt"] = tokens
+    completion["max_tokens"] = payload.get("max_completion_tokens") or payload.get("max_tokens", 512)
+    return completion, True
+
+
+def completion_as_chat(payload):
+    """Preserve finish reasons, token usage and response IDs for LiteLLM."""
+    response = dict(payload)
+    response["object"] = "chat.completion"
+    response["choices"] = [dict(index=choice["index"],
+                                 message={"role": "assistant", "content": choice["text"]},
+                                 finish_reason=choice.get("finish_reason"),
+                                 logprobs=choice.get("logprobs"))
+                           for choice in payload["choices"]]
+    return response
+
+
+def start_proxy(backends, *, tokenizer=None, tokenizer_path=None, trust_remote_code=False):
     """Bind only on localhost; forward non-streaming evaluation requests."""
     counter, lock = itertools.cycle(backends), threading.Lock()
+    tokenizer_lock = threading.Lock()
+
+    def budget_tokenizer(payload):
+        nonlocal tokenizer
+        if (payload.get("chat_template_kwargs") or {}).get("platoon_max_prompt_tokens") is None:
+            return None
+        with tokenizer_lock:
+            if tokenizer is None and tokenizer_path is not None:
+                from transformers import AutoTokenizer
+                tokenizer = AutoTokenizer.from_pretrained(tokenizer_path,
+                                                         trust_remote_code=trust_remote_code,
+                                                         local_files_only=True)
+            return tokenizer
 
     class Handler(BaseHTTPRequestHandler):
         def forward(self):
@@ -58,10 +126,23 @@ def start_proxy(backends):
             headers = {key: value for key, value in self.headers.items()
                        if key.lower() not in {"host", "connection", "content-length"}}
             body = self.rfile.read(int(self.headers.get("Content-Length", 0))) if self.command == "POST" else None
-            request = urllib.request.Request(backend.rstrip("/") + self.path, data=body, headers=headers, method=self.command)
+            path, budgeted = self.path, False
+            if path == "/v1/chat/completions" and body:
+                try:
+                    payload = json.loads(body)
+                    payload, budgeted = prepare_vllm_request(payload, budget_tokenizer(payload))
+                    if budgeted:
+                        body = json.dumps(payload).encode()
+                        path = "/v1/completions"
+                except (ValueError, KeyError, TypeError) as error:
+                    self.send_error(400, str(error))
+                    return
+            request = urllib.request.Request(backend.rstrip("/") + path, data=body, headers=headers, method=self.command)
             try:
                 with urllib.request.urlopen(request, timeout=3600) as response:
                     content, status = response.read(), response.status
+                if budgeted:
+                    content = json.dumps(completion_as_chat(json.loads(content))).encode()
             except urllib.error.HTTPError as error:
                 content, status = error.read(), error.code
             except OSError:
@@ -79,6 +160,10 @@ def start_proxy(backends):
             pass
 
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    # On cancellation, clients can disconnect while upstream requests remain
+    # active. Do not block server_close on those handlers before stopping the
+    # owned model processes; otherwise teardown can wait an hour.
+    server.daemon_threads = True
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
     return server, worker
@@ -151,7 +236,8 @@ def local_services(*, model_path, model_name, output, gpus="auto", tensor_parall
             if time.monotonic() >= deadline:
                 raise TimeoutError(f"Model startup timed out; inspect {services}")
             time.sleep(1)
-        server, worker = start_proxy(backends)
+        server, worker = start_proxy(backends, tokenizer_path=model_path,
+                                     trust_remote_code=trust_remote_code)
         yield f"http://127.0.0.1:{server.server_port}/v1"
     finally:
         if server is not None:

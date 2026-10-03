@@ -30,6 +30,7 @@ from transformers.tokenization_utils_fast import PreTrainedTokenizerFast
 from platoon.train.areal.actor import create_actor
 from platoon.train.areal.config_defs import PlatoonArealRLTrainerConfig
 from platoon.train.areal.distributed_stats import export_all_distributed_safe
+from safety.rollout_capacity import release_skipped_rollout_capacity
 from platoon.utils.train import (
     bcast_and_split_from_rank0,
     post_process_and_redistribute_tensor_container,
@@ -328,6 +329,9 @@ class PlatoonArealRLTrainer:
                     )
 
             if batch is None:
+                released = release_skipped_rollout_capacity(
+                    self, self.train_dataloader.batch_size
+                )
                 _append_training_event(
                     config,
                     {
@@ -336,6 +340,7 @@ class PlatoonArealRLTrainer:
                         "epoch": epoch,
                         "epoch_step": step,
                         "reason": "insufficient_trainable_datums_or_empty_batch",
+                        "released_task_groups": released,
                         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
                     },
                 )

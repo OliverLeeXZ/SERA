@@ -11,6 +11,7 @@ sys.path.insert(0, str(REPOSITORY / "Evaluation"))
 from evaluation_common import cli as evaluation_cli, create_plan, default_protocol
 from .textworld_bestofn.rubric_selector import RubricSelectionConfig
 from .textworld_bestofn.kimi_oracle import ExternalJudgeConfig
+from Runtime.clients.external_model import preflight_external_models
 
 
 def protocol(settings=None, selector=None, judge=None):
@@ -32,6 +33,7 @@ def cli(command):
     parser.add_argument("--model", required=True, help="Exact policy served-model ID")
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--num-shards", type=int, default=1)
+    parser.add_argument("--dry-run", action="store_true", help="Validate configuration only; no API requests or plan writes")
     defaults = default_protocol("TextWorld")
     for key, value in defaults.items():
         parser.add_argument("--" + key.replace("_", "-"),
@@ -56,4 +58,8 @@ def cli(command):
                                 max_prompt_tokens=args.judge_max_prompt_tokens,
                                 max_completion_tokens=args.judge_max_completion_tokens) if selector.selection_mode == "oracle" else None
     values = protocol({key: getattr(args, key) for key in defaults}, selector, judge)
+    preflight_external_models([judge.as_external_model()] if judge else [], dry_run=args.dry_run)
+    if args.dry_run:
+        print(json.dumps(dict(model=args.model, num_shards=args.num_shards, protocol=values), indent=2))
+        return
     print(json.dumps(create_plan("TextWorld", args.model, args.output_root, args.num_shards, values), indent=2))

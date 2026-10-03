@@ -29,6 +29,7 @@ Runtime/
     prompts.py               # rubric-generation, scoring, and teacher prompts
     scoring.py               # structured rubric/score parsing
   clients/openai_chat.py     # HTTP client and completion types
+  clients/external_model.py # required-model validation and startup API probes
   bootstrap.py               # initialize the vendored platoon namespace
   requirements-textcraft.txt
   licenses/platoon-MIT.txt

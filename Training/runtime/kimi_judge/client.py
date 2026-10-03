@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from .prompt import build_judge_messages, parse_binary_success
+from Runtime.clients.external_model import external_request_error
 
 
 @dataclass(frozen=True)
@@ -91,9 +92,7 @@ class KimiJudgeClient:
                     if attempt < self.max_retries:
                         await asyncio.sleep(min(2.0 ** attempt, 8.0))
             return KimiJudgeResult(
-                error=f"{type(last_error).__name__}: {last_error}"
-                if last_error
-                else "KIMI judge request failed"
+                error=external_request_error(last_error)
             )
 
         return await asyncio.gather(*(judge_one(item) for item in trajectories))

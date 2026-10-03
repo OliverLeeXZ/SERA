@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import atexit
 import asyncio
 import builtins
 import sys
@@ -358,6 +359,20 @@ class UnsafeAsyncioTaskIntrospectionDetector(ast.NodeVisitor):
         self.generic_visit(node)
 
 
+class _CodeActShell(InteractiveShellEmbed):
+    def atexit_operations(self):
+        """Keep IPython cleanup, but never force global GC during process exit.
+
+        A constructor/fork that fails before an episode starts may leave only
+        IPython's registered callback holding this shell. Such shells must have
+        the same safe exit path as explicitly closed executors. Output caching
+        is unchanged until cleanup begins.
+        """
+        self.displayhook.do_full_cache = False
+        self.displayhook._ = self.displayhook.__ = self.displayhook.___ = ""
+        return super().atexit_operations()
+
+
 class IPythonCodeExecutor(CodeExecutor):
     # TODO: Separate actions and modules? Use this info to build action space description?
     def __init__(
@@ -381,7 +396,7 @@ class IPythonCodeExecutor(CodeExecutor):
         config = Config()
         # history keeps files open preventing making > ~50 envs
         config.HistoryManager.enabled = False
-        shell = InteractiveShellEmbed(config=config)
+        shell = _CodeActShell(config=config)
         sys.excepthook = original_excepthook  # prevents it from changing traceback format globally
         for action in self.actions:
             shell.user_ns[action.__name__] = action
@@ -457,7 +472,16 @@ class IPythonCodeExecutor(CodeExecutor):
             },
         ):
             with ShellCapture() as capture:
-                await self.shell.run_cell_async(code)
+                result = await self.shell.run_cell_async(code)
+
+            # IPython catches BaseException, including asyncio cancellation,
+            # and renders it as a cell error. Restore structured cancellation
+            # so task/step timeouts and shutdown cannot keep executing code.
+            task = asyncio.current_task()
+            cancelled_cell = any(isinstance(getattr(result, name, None), asyncio.CancelledError)
+                                 for name in ("error_in_exec", "error_before_exec"))
+            if cancelled_cell or (task is not None and task.cancelling()):
+                raise asyncio.CancelledError()
 
             cap_stdout = strip_ansi_escape_sequences(capture.pop_stdout())
             cap_stderr = strip_ansi_escape_sequences(capture.pop_stderr())
@@ -481,5 +505,28 @@ class IPythonCodeExecutor(CodeExecutor):
         # )
 
     async def reset(self) -> CodeExecutor:
+        await self.close()
         self.shell = self._create_shell()
         return self
+
+    async def close(self) -> None:
+        self.close_shell()
+
+    def close_shell(self) -> None:
+        """Release this shell while the interpreter and its workers are alive.
+
+        IPython registers each embedded shell as a process-exit callback. Its
+        display-cache flush forces a process-wide gc.collect(), which hung all
+        trainer ranks during interpreter shutdown in a real TextCraft run.
+        Preserve normal output caching during execution, but clear the finished
+        shell's namespaces without that global collection and unregister its
+        callback. Other shells and the shared environment inventory are untouched.
+        """
+        shell = self.shell
+        if shell is None:
+            return
+        shell.displayhook.do_full_cache = False
+        shell.displayhook._ = shell.displayhook.__ = shell.displayhook.___ = ""
+        shell.atexit_operations()
+        atexit.unregister(shell.atexit_operations)
+        self.shell = None

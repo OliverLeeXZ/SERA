@@ -133,7 +133,7 @@ class InferenceBenchmarkRunner:
             num_subtrajectories=0,
             wall_time_seconds=wall_time_seconds,
             source_path=source_path,
-            error=error or "Missing trajectory collection file",
+            error=error if error is not None else "Missing trajectory collection file",
         )
 
     async def _arun_single_rollout(

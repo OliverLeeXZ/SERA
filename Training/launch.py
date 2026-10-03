@@ -18,6 +18,8 @@ from sera_training.method_names import paper_method_name
 from sera_training.stage_kernel import StageSchedule
 
 ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT.parent))
+from sera_training.external_models import preflight_training
 
 
 def validate(config):
@@ -102,6 +104,8 @@ def main(argv=None):
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
     config, schedule = resolve(args)
+    # Fail before importing GPU engines or allocating/submitting any workers.
+    preflight_training(config, dry_run=args.dry_run)
     if args.dry_run:
         print(json.dumps(OmegaConf.to_container(config, resolve=True), indent=2))
         return 0
@@ -112,10 +116,6 @@ def main(argv=None):
     from areal.api.cli_args import to_structured_cfg
     typed = OmegaConf.to_object(to_structured_cfg(config, TrainingConfig))
     normalize(typed)
-    names = {x.stage for x in schedule.schedule}
-    if args.environment == "textworld" and (config.execution_reward == "rao" or "rubric_generation" in names):
-        from sera_training.trainer import external_endpoint
-        external_endpoint(typed)
     destination = Path(config.cluster.fileroot)
     destination.mkdir(parents=True, exist_ok=True)
     # Keep each invocation's configuration without overwriting a previous launch.

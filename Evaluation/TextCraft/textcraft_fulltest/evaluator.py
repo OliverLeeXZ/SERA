@@ -214,6 +214,15 @@ class ProgressInferenceBenchmarkRunner(InferenceBenchmarkRunner):
         super().__init__(*args, **kwargs)
         self.manifest = manifest
 
+    def _load_record_from_artifacts(self, task_id, rollout_index, collection_path, metadata_path):
+        # The parent derives all metrics before returning. Keep only those
+        # metrics and the durable source path, including during final reporting:
+        # retaining every task's full payload would inflate memory and serialize
+        # a second copy of the entire benchmark into the summary report.
+        record = super()._load_record_from_artifacts(
+            task_id, rollout_index, collection_path, metadata_path)
+        return release_trajectory_payload(record) if record is not None else None
+
     def _publish_summary(self, records) -> dict[str, Any]:
         summary = summarize_records(records, self.manifest)
         write_summary(self.output_dir / "progress_summary.json", summary)

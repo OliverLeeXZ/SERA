@@ -62,6 +62,10 @@ async def run_episode(agent: Agent, env: Env, verbose: bool = False, timeout: in
         if verbose:
             print(detailed_msg)
         error_message.set(detailed_msg)
+        if isinstance(e, asyncio.CancelledError):
+            # Task timeout/shutdown must reach the caller after partial traces
+            # are finalized. Returning from finally would swallow cancellation.
+            raise
     finally:
         try:
             await agent.close()
@@ -78,7 +82,7 @@ async def run_episode(agent: Agent, env: Env, verbose: bool = False, timeout: in
         traj.finish_message = finish_message.get()
         # TODO: We could move trajectory finish logic (rewards, finish message, etc.) from env to here.
         traj_collection.finish_trajectory(traj.id)
-        return traj
+    return traj
 
 
 def set_context_vars(agent: Agent, env: Env, timeout: int | None):

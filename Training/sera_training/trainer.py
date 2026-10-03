@@ -18,6 +18,7 @@ from .config import TrainingConfig, JudgeConfig
 from .stage_kernel import StageSchedule
 from .stage_workflow import SharedStageWorkflow
 from .rubric_clients import create_rubric_client, prepare_rubric_config
+from .external_models import preflight_training
 
 
 
@@ -224,6 +225,8 @@ def datasets(config):
 
 def main(args):
     config, _ = load_expr_config(args, TrainingConfig)
+    # Every trainer process checks its own credentials/network before GPU initialization.
+    preflight_training(config)
     schedule = normalize(config)
     from platoon.train.areal import PlatoonArealRLTrainer
     from safety.sync_safe_batch import (install_schema_safe_trajectory_concat,

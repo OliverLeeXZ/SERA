@@ -83,12 +83,19 @@ class ArealPolicyClient:
                 try:
                     extra_body = dict(self.request_extra_body)
                     if self.max_prompt_tokens is not None:
-                        extra_body["max_prompt_tokens"] = max(
+                        prompt_budget = max(
                             1,
                             self.max_prompt_tokens
                             + self.default_completion_tokens
                             - max_completion_tokens,
                         )
+                        # OpenAI's SDK flattens extra_body onto the wire. The
+                        # SGLang request schema drops an unknown top-level
+                        # max_prompt_tokens, whereas our proxy forwards
+                        # chat_template_kwargs to the truncation adapter.
+                        chat_kwargs = dict(extra_body.get("chat_template_kwargs") or {})
+                        chat_kwargs["platoon_max_prompt_tokens"] = prompt_budget
+                        extra_body["chat_template_kwargs"] = chat_kwargs
                     if not extra_body:
                         extra_body = None
                     async with self._semaphore:

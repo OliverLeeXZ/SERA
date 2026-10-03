@@ -12,6 +12,7 @@ from typing import Any, Callable
 from openai import AsyncOpenAI
 
 from Runtime.rubric.scoring import parse_policy_score, parse_rubric
+from Runtime.clients.external_model import external_request_error
 
 from .config import RubricSubagentRewardConfig
 
@@ -140,7 +141,7 @@ class KimiRubricClient:
         return ParsedGeneration(
             error=(
                 f"{operation} failed after {self.config.max_retries} attempts: "
-                f"{type(last_error).__name__}: {last_error}"
+                + external_request_error(last_error)
             )
         )
 
