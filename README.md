@@ -5,7 +5,7 @@
 # SERA: Self-Evaluating Recursive Agents
 
 <p align="center">
-  <img src="https://arxiv.org/pdf/2610.04902" alt="arXiv paper">
+  <a href="https://arxiv.org/pdf/2610.04902"><img src="https://img.shields.io/badge/arXiv-Paper-b31b1b.svg" alt="arXiv paper"></a>
   <a href="https://github.com/OliverLeeXZ/SERA"><img src="https://img.shields.io/badge/GitHub-Code-181717?logo=github" alt="GitHub code"></a>
   <a href="https://huggingface.co/Litux12138/SERA"><img src="https://img.shields.io/badge/Hugging%20Face-Checkpoints-ffcc4d?logo=huggingface" alt="Hugging Face checkpoints"></a>
   <img src="https://img.shields.io/badge/Python-3.12-3776ab?logo=python" alt="Python 3.12">
